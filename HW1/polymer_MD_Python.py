@@ -33,6 +33,60 @@ def Polymer_MD_Python():
     visualize_particles(N, x, L, pairs, mytitle)
 
 
+def Polymer_MD_Vary_N():
+    # Loop over various N and plot the result
+    N = [25, 20, 5]
+    T = 0.05
+    dt = 0.0005
+    steps = 200000
+
+    epsilon_LJ = 1
+    cutoff_LJ = 2.5
+    spring_coeff = 5
+    min_sep = 1.122
+
+    print_interval = 1000
+    for n in N:
+        L = min_sep * n
+
+        x, v = initial_configuration(min_sep, n)
+        pairs = []
+
+        for step_i in range(0, steps):
+            if np.mod(step_i - 1, print_interval) == 0:
+                mytitle = ["step=", str(step_i), "N=", str(n), "L=", str(L)]
+                print(mytitle)
+            x, pairs = steepest_descent(N, x, dt, cutoff_LJ, epsilon_LJ, min_sep, spring_coeff, T)
+        visualize_particles(n, x, L, pairs, mytitle)
+
+
+def Polymer_MD_Vary_LJ():
+    # Loop over various epsilon_LJ and plot the result
+    N = 25
+    T = 0.05
+    dt = 0.0005
+    steps = 200000
+
+    epsilon_LJ = [1, 0.5, 0]
+    cutoff_LJ = 2.5
+    spring_coeff = 5
+    min_sep = 1.122
+
+    L = min_sep * N
+    print_interval = 1000
+
+    x, v = initial_configuration(min_sep, N)
+    for e in epsilon_LJ:
+        pairs = []
+
+        for step_i in range(0, steps):
+            if np.mod(step_i - 1, print_interval) == 0:
+                mytitle = ["step=", str(step_i), "N=", str(N), "L=", str(L)]
+                print(mytitle)
+            x, pairs = steepest_descent(N, x, dt, cutoff_LJ, e, min_sep, spring_coeff, T)
+        visualize_particles(N, x, L, pairs, mytitle)
+
+
 def initial_configuration(initial_min_sep, N):
     x = np.zeros((N, 2))
     v = np.zeros((N, 2))
@@ -131,5 +185,7 @@ def visualize_particles(N, x, L, pairs, mytitle):
     plt.show()
     return
 
-
-Polymer_MD_Python()
+# Un-comment whichever method to use
+#Polymer_MD_Python()
+#Polymer_MD_Vary_N()
+#Polymer_MD_Vary_LJ()
