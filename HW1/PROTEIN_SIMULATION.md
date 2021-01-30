@@ -1,0 +1,1 @@
+Write-up for HW1 part 1 will go here.
