@@ -31,8 +31,8 @@ def Polymer_MD_Vary_N():
                 print("step =", step_i, "  N =", n, "  radius_of_gyration =", radius_gy[n_i, step_i])
                 visualize_particles(x, step_i, print_interval, "part-1-" + str(n_i))
 
-    np.save("part_1-radius_of_gyration.npy", radius_gy)
-    np.save("part_1-radius_of_gyration_rms.npy", radius_gy_rms)
+    # np.save("part_1-radius_of_gyration.npy", radius_gy)
+    # np.save("part_1-radius_of_gyration_rms.npy", radius_gy_rms)
 
 
 def Polymer_MD_Vary_LJ():
@@ -52,8 +52,8 @@ def Polymer_MD_Vary_LJ():
     radius_gy = np.zeros((len(epsilon_LJ), steps))
     radius_gy_rms = np.zeros((len(epsilon_LJ), steps))
 
-    x = initial_configuration(min_sep, N)
     for e_i, e in enumerate(epsilon_LJ):
+        x = initial_configuration(min_sep, N)
 
         for step_i in range(0, steps):
             x, pairs = steepest_descent(N, x, dt, cutoff_LJ, e, min_sep, spring_coeff, T)
@@ -188,24 +188,24 @@ def visualize_particles(x, step, save_interval, folder):
     plt.ylim([-10, 10])
     plt.xlim([-10, 10])
     plt.scatter(x[:, 0], x[:, 1])
-    frame_num = (step - 1) / save_interval + 1
+    frame_num = math.floor((step - 1) / save_interval + 1)
     plt.savefig(folder + "/" + f"{frame_num:06d}" + ".png", format="png")
     plt.clf()
 
 
 # Step 1: Modified "main" method for calculating part 1
-Polymer_MD_Vary_N()
+# Polymer_MD_Vary_N()
 
 # Step 2: Modified "main" method for calculating part 2
 Polymer_MD_Vary_LJ()
 
 # Step 3: Create graphs from the data calculated in parts 1 and 2
-plot_radius_of_gyration("part_1-radius_of_gyration.npy", "part_1-radius_of_gyration.png",
-                        "Radius of Gyration\n(HW1 PDF definition)", ["N=25", "N=20", "N=5"])
-
-plot_radius_of_gyration("part_1-radius_of_gyration_rms.npy", "part_1-radius_of_gyration_rms.png",
-                        "Radius of Gyration\n(Wikipedia definition)", ["N=25", "N=20", "N=5"])
-
+# plot_radius_of_gyration("part_1-radius_of_gyration.npy", "part_1-radius_of_gyration.png",
+#                         "Radius of Gyration\n(HW1 PDF definition)", ["N=25", "N=20", "N=5"])
+#
+# plot_radius_of_gyration("part_1-radius_of_gyration_rms.npy", "part_1-radius_of_gyration_rms.png",
+#                         "Radius of Gyration\n(Wikipedia definition)", ["N=25", "N=20", "N=5"])
+#
 plot_radius_of_gyration("part_2-radius_of_gyration.npy", "part_2-radius_of_gyration.png",
                         "Radius of Gyration\n(HW1 PDF definition)",
                         ["epsilon_LJ=1", "epsilon_LJ=0.5", "epsilon_LJ=0"])
