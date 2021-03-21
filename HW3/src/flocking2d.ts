@@ -33,6 +33,10 @@ export default class Flocking2D {
       this.width / this.settings.width,
       this.height / this.settings.height,
     );
+    if (this.settings.keepAspectRatio) {
+      this.scale.setX(Math.min(this.scale.x, this.scale.y));
+      this.scale.setY(Math.min(this.scale.x, this.scale.y));
+    }
     this.boids = [];
     this.initSketch();
   }
@@ -66,10 +70,31 @@ export default class Flocking2D {
       this.settings.reset = false;
     }
 
-    p5.background(25);
-    p5.translate(this.width / 2, this.height / 2);
-    p5.fill(255);
+    // update scale from settings
+    this.scale.setX(this.width / this.settings.width);
+    this.scale.setY(this.height / this.settings.height);
+    if (this.settings.keepAspectRatio) {
+      this.scale.setX(Math.min(this.scale.x, this.scale.y));
+      this.scale.setY(Math.min(this.scale.x, this.scale.y));
+    }
+
+    // drawing options
+    p5.background(15);
     p5.noStroke();
+    p5.rectMode('center');
+
+    // move drawing domain
+    p5.translate(
+      this.settings.center.x + this.width / 2,
+      this.settings.center.y + this.height / 2,
+    );
+
+    // draw the background of the simulation domain
+    p5.fill(30);
+    p5.rect(0, 0, this.settings.width * this.scale.x, this.settings.height * this.scale.y);
+
+    // draw the boids (and compute them for now, though I want to abstract this later maybe somehow...)
+    p5.fill(190);
     this.boids.forEach((boid) => {
       const heading: THREE.Vector2 = new THREE.Vector2().addVectors(
         boid.position,

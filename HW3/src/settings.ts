@@ -25,6 +25,12 @@ export default class Settings {
   public center: THREE.Vector2;
 
   /**
+   * @member {boolean} keepAspectRatio - tells p5*js to draw with the aspect ratio
+   *  of the simulation if true, or to fill the whole canvas if false.
+   */
+  public keepAspectRatio: boolean;
+
+  /**
    * @member {THREE.Vector2} start - The starting point of the boids.
    */
   public start: THREE.Vector2;
@@ -99,10 +105,39 @@ export default class Settings {
       parametersDiv.style.display = 'block';
     });
 
-    const closeParameters: HTMLButtonElement = document.getElementById('closeParameters') as HTMLButtonElement;
     const parameterN: HTMLInputElement = document.getElementById('inputN') as HTMLInputElement;
+    const parameterWidth: HTMLInputElement = document.getElementById('inputWidth') as HTMLInputElement;
+    const parameterHeight: HTMLInputElement = document.getElementById('inputHeight') as HTMLInputElement;
+    const parameterCenterX: HTMLInputElement = document.getElementById('inputCenterX') as HTMLInputElement;
+    const parameterCenterY: HTMLInputElement = document.getElementById('inputCenterY') as HTMLInputElement;
+    const parameterKeepAR: HTMLInputElement = document.getElementById('inputAspectRatio') as HTMLInputElement;
+    const parameterStartX: HTMLInputElement = document.getElementById('inputStartX') as HTMLInputElement;
+    const parameterStartY: HTMLInputElement = document.getElementById('inputStartY') as HTMLInputElement;
+    const parameterP: HTMLInputElement = document.getElementById('inputP') as HTMLInputElement;
+    const parameterV: HTMLInputElement = document.getElementById('inputV') as HTMLInputElement;
+    const parameterC1: HTMLInputElement = document.getElementById('inputC1') as HTMLInputElement;
+    const parameterC2: HTMLInputElement = document.getElementById('inputC2') as HTMLInputElement;
+    const parameterC3: HTMLInputElement = document.getElementById('inputC3') as HTMLInputElement;
+    const parameterC4: HTMLInputElement = document.getElementById('inputC4') as HTMLInputElement;
+    const parameterVLimit: HTMLInputElement = document.getElementById('inputVLimit') as HTMLInputElement;
+
+    const closeParameters: HTMLButtonElement = document.getElementById('closeParameters') as HTMLButtonElement;
     closeParameters.addEventListener('click', () => {
       parameterN.value = this.N.toString();
+      parameterWidth.value = this.width.toString();
+      parameterHeight.value = this.height.toString();
+      parameterCenterX.value = this.center.x.toString();
+      parameterCenterY.value = this.center.y.toString();
+      parameterKeepAR.checked = this.keepAspectRatio;
+      parameterStartX.value = this.start.x.toString();
+      parameterStartY.value = this.start.y.toString();
+      parameterP.value = this.P.toString();
+      parameterV.value = this.V.toString();
+      parameterC1.value = this.c1.toString();
+      parameterC2.value = this.c2.toString();
+      parameterC3.value = this.c3.toString();
+      parameterC4.value = this.c4.toString();
+      parameterVLimit.value = this.vlimit.toString();
 
       nav.style.display = 'block';
       parametersDiv.style.display = 'none';
@@ -110,7 +145,23 @@ export default class Settings {
 
     const applyParameters: HTMLButtonElement = document.getElementById('applyParameters') as HTMLButtonElement;
     applyParameters.addEventListener('click', () => {
+      // TODO: some validation maybe? like make sure start is within the bounds?
+
       this.N = parseInt(parameterN.value);
+      this.width = parseInt(parameterWidth.value);
+      this.height = parseInt(parameterHeight.value);
+      this.center.setX(parseFloat(parameterCenterX.value));
+      this.center.setY(parseFloat(parameterCenterY.value));
+      this.keepAspectRatio = parameterKeepAR.checked;
+      this.start.setX(parseFloat(parameterStartX.value));
+      this.start.setX(parseFloat(parameterStartY.value));
+      this.P = parseFloat(parameterP.value);
+      this.V = parseFloat(parameterV.value);
+      this.c1 = parseFloat(parameterC1.value);
+      this.c2 = parseFloat(parameterC2.value);
+      this.c3 = parseFloat(parameterC3.value);
+      this.c4 = parseFloat(parameterC4.value);
+      this.vlimit = parseFloat(parameterVLimit.value);
 
       nav.style.display = 'block';
       parametersDiv.style.display = 'none';
@@ -118,17 +169,23 @@ export default class Settings {
 
     parametersDiv.style.display = 'none';
     this.N = parseInt(parameterN.value);
-
-    this.width = 200;
-    this.height = 200;
-    this.center = new THREE.Vector2();
-    this.start = new THREE.Vector2();
-    this.P = 10;
-    this.V = 10;
-    this.c1 = 0.00001;
-    this.c2 = 0.01;
-    this.c3 = 1;
-    this.c4 = 0.2;
-    this.vlimit = 1;
+    this.width = parseInt(parameterWidth.value);
+    this.height = parseInt(parameterHeight.value);
+    this.center = new THREE.Vector2(
+      parseFloat(parameterCenterX.value),
+      parseFloat(parameterCenterY.value),
+    );
+    this.keepAspectRatio = parameterKeepAR.checked;
+    this.start = new THREE.Vector2(
+      parseFloat(parameterStartX.value),
+      parseFloat(parameterStartY.value),
+    );
+    this.P = parseFloat(parameterV.value);
+    this.V = parseFloat(parameterP.value);
+    this.c1 = parseFloat(parameterC1.value);
+    this.c2 = parseFloat(parameterC2.value);
+    this.c3 = parseFloat(parameterC3.value);
+    this.c4 = parseFloat(parameterC4.value);
+    this.vlimit = parseFloat(parameterVLimit.value);
   }
 }
