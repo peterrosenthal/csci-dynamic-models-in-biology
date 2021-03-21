@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Peter Rosenthal - Flocking - Dynamic Models in Biology</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <main>
+            <nav>
+                <button id="playButton">Play</button>
+                <button id="pauseButton">Pause</button>
+                <button id="resetButton">Reset</button>
+                <button id="openParameters">Parameters</button>
+            </nav>
+            <div id="parametersDiv">
+                <button id="closeParameters">Close</button>
+                <label for="inputN">Number of boids</label>
+                <input type="number" id="inputN" name="inputN" step="1" value="400">
+                <!--<label for=""></label>
+                <input type="number" id="" name="" step="0.0001" value="">-->
+                <button id="applyParameters">Apply</button>
+            </div>
+            <div id="sketch"></div>
+        </main>
+        <script src="main.js"></script>
+    </body>
+</html>
