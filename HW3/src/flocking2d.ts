@@ -7,14 +7,12 @@ import Settings from './settings';
  * Flocking-like behaivior is simulated using a boids algorithm, visualization is done with p5*js
  */
 export default class Flocking2D {
-  public width: number;
-  public height: number;
-  public scale: THREE.Vector2;
-
-  private parent: HTMLCanvasElement;
+  private parent: HTMLElement;
   private settings: Settings;
-  private p5: P5;
   private boids: Boid[];
+  private width: number;
+  private height: number;
+  private scale: THREE.Vector2;
 
   /**
    * Simulation is initialized upon creation of the class,
@@ -24,7 +22,7 @@ export default class Flocking2D {
    * @param {Settings} settings - the settings object for simulation.
    * @constructor
    */
-  constructor(parent: HTMLCanvasElement, settings: Settings) {
+  constructor(parent: HTMLElement, settings: Settings) {
     this.parent = parent;
     this.settings = settings;
     this.width = document.documentElement.clientWidth;
@@ -38,6 +36,7 @@ export default class Flocking2D {
       this.scale.setY(Math.min(this.scale.x, this.scale.y));
     }
     this.boids = [];
+
     this.initSketch();
   }
 
@@ -118,7 +117,7 @@ export default class Flocking2D {
    * Creates the p5 instance.
    */
   private initSketch() {
-    this.p5 = new P5((self: P5) => {
+    new P5((self: P5) => {
       self.setup = () => {
         this.setup(self);
       };
