@@ -1,4 +1,3 @@
-import Flocking2D from './flocking2d';
-import Settings from './settings';
+import Simulation from './simulation';
 
-new Flocking2D(document.getElementById('sketch'), new Settings());
+new Simulation();

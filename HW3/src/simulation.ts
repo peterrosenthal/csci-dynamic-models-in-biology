@@ -1,9 +1,11 @@
 import * as THREE from 'three';
+import Flocking from './flocking';
+import SpeedController from './speed';
 
 /**
  * Settings for the boids simulation.
  */
-export default class Settings {
+export default class Simulation {
   /**
    * @member {number} N - The number of boids in the simulation.
    */
@@ -70,38 +72,36 @@ export default class Settings {
    */
   public vlimit: number;
 
+  public speedController: SpeedController;
+  public flocking: Flocking;
+
   public play: boolean;
-  public reset: boolean;
 
   /**
-   * Sets some default variables (for now)
    * @constructor
    */
   constructor() {
-    const nav: HTMLDivElement = document.getElementsByTagName('nav')[0] as HTMLDivElement;
     const playButton: HTMLButtonElement = document.getElementById('playButton') as HTMLButtonElement;
     const pauseButton: HTMLButtonElement = document.getElementById('pauseButton') as HTMLButtonElement;
     const resetButton: HTMLButtonElement = document.getElementById('resetButton') as HTMLButtonElement;
     playButton.addEventListener('click', () => {
-      this.play = true;
+      this.speedController.play();
       playButton.style.display = 'none';
       pauseButton.style.display = 'inline-block';
       resetButton.style.display = 'inline-block';
     });
     pauseButton.addEventListener('click', () => {
-      this.play = false;
+      this.speedController.pause();
       playButton.style.display = 'inline-block';
       pauseButton.style.display = 'none';
     });
     resetButton.addEventListener('click', () => {
-      this.reset = true;
-      resetButton.style.display = 'none';
+      this.flocking.start();
     });
 
     const openParameters: HTMLButtonElement = document.getElementById('openParameters') as HTMLButtonElement;
     const parametersDiv: HTMLDivElement = document.getElementById('parametersDiv') as HTMLDivElement;
     openParameters.addEventListener('click', () => {
-      nav.style.display = 'none';
       parametersDiv.style.display = 'block';
     });
 
@@ -139,7 +139,6 @@ export default class Settings {
       parameterC4.value = this.c4.toString();
       parameterVLimit.value = this.vlimit.toString();
 
-      nav.style.display = 'block';
       parametersDiv.style.display = 'none';
     });
 
@@ -147,7 +146,10 @@ export default class Settings {
     applyParameters.addEventListener('click', () => {
       // TODO: some validation maybe? like make sure start is within the bounds?
 
-      this.N = parseInt(parameterN.value);
+      if (this.N != parseInt(parameterN.value)) {
+        this.N = parseInt(parameterN.value);
+        this.flocking.start();
+      }
       this.width = parseInt(parameterWidth.value);
       this.height = parseInt(parameterHeight.value);
       this.center.setX(parseFloat(parameterCenterX.value));
@@ -163,7 +165,6 @@ export default class Settings {
       this.c4 = parseFloat(parameterC4.value);
       this.vlimit = parseFloat(parameterVLimit.value);
 
-      nav.style.display = 'block';
       parametersDiv.style.display = 'none';
     });
 
@@ -187,5 +188,9 @@ export default class Settings {
     this.c3 = parseFloat(parameterC3.value);
     this.c4 = parseFloat(parameterC4.value);
     this.vlimit = parseFloat(parameterVLimit.value);
+
+    this.speedController = new SpeedController(document.getElementById('speedController'), this);
+    this.flocking = new Flocking(document.getElementById('sketch'), this);
+    this.flocking.start();
   }
 }
