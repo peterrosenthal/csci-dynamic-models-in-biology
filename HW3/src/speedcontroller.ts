@@ -71,19 +71,19 @@ export default class SpeedController {
       },
       {
         position: sliderWidth * 9 / 10 + this.margin + this.padding,
-        value: this.simulation.N * 2,
+        value: this.simulation.parameters.N * 2,
         label: '2x',
       },
     ];
     let numTicks = 0;
-    while (this.simulation.N >> numTicks > 0) {
+    while (this.simulation.parameters.N >> numTicks > 0) {
       let d: string = '';
       if (numTicks > 0) {
         d = '/' + Math.pow(2, numTicks).toString();
       }
       this.snapPoints.push({
         position: this.margin + this.padding + ((sliderWidth * 3 / 5) >> numTicks),
-        value: this.simulation.N >> numTicks,
+        value: this.simulation.parameters.N >> numTicks,
         label: `1${d}x`,
       });
       numTicks++;
@@ -191,12 +191,8 @@ export default class SpeedController {
    */
   private initSketch() {
     new P5((self: P5) => {
-      self.setup = () => {
-        this.setup(self);
-      };
-      self.draw = () => {
-        this.draw(self);
-      };
+      self.setup = () => this.setup(self);
+      self.draw = () => this.draw(self);
     });
   }
 }

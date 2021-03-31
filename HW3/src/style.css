@@ -15,6 +15,26 @@ nav {
   height: 50px;
 }
 
+.inputNumber {
+  position: relative;
+  text-align: center;
+  margin: 0.2em;
+  width: 8em;
+  height: 4em;
+}
+
+.inputNumber input {
+  width: 80%;
+  text-align: center;
+  margin: auto;
+}
+
+.inputNumber canvas {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
 #parametersDiv {
   background: #fff;
 }

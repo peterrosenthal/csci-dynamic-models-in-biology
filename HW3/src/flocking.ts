@@ -12,7 +12,7 @@ export default class Flocking {
   private boids: Boid[];
   private width: number;
   private height: number;
-  private scale: THREE.Vector2;
+  private scale: number;
   private playingMaxSpeed: boolean;
 
   /**
@@ -28,28 +28,31 @@ export default class Flocking {
     this.simulation = simulation;
     this.width = document.documentElement.clientWidth;
     this.height = document.documentElement.clientHeight;
-    this.scale = new THREE.Vector2(
-      this.width / this.simulation.width,
-      this.height / this.simulation.height,
-    );
-    if (this.simulation.keepAspectRatio) {
-      this.scale.setX(Math.min(this.scale.x, this.scale.y));
-      this.scale.setY(Math.min(this.scale.x, this.scale.y));
-    }
     this.boids = [];
     this.playingMaxSpeed = false;
 
+    this.updateScale();
     this.initSketch();
   }
 
   /**
    * (Re)start the simulation by cleaning out the boids array and repopulating it.
    */
-  public start() {
+  public restart() {
     this.boids = [];
-    for (let i: number = 0; i < this.simulation.N; i++) {
+    for (let i: number = 0; i < this.simulation.parameters.N; i++) {
       this.boids.push(new Boid(this.simulation));
     }
+  }
+
+  /**
+   * Updates this.scale based on the values in simulation parameters.
+   */
+  public updateScale() {
+    this.scale = Math.min(
+      this.width / this.simulation.parameters.width,
+      this.height / this.simulation.parameters.height,
+    );
   }
 
   /**
@@ -58,8 +61,8 @@ export default class Flocking {
    */
   private async runMax(start: number) {
     while (this.simulation.speedController.speed < 0) {
-      const input: number = Math.min(this.simulation.N, 300);
-      const output: number = this.updateBoids(Math.min(this.simulation.N, 300));
+      const input: number = Math.min(this.simulation.parameters.N, 300);
+      const output: number = this.updateBoids(Math.min(this.simulation.parameters.N, 300));
       if (input == output) {
         this.setBoidsUpdated(false);
       }
@@ -112,14 +115,6 @@ export default class Flocking {
    * @param {p5} p5 - the p5 instance.
    */
   private draw(p5: P5) {
-    // update scale from settings
-    this.scale.setX(this.width / this.simulation.width);
-    this.scale.setY(this.height / this.simulation.height);
-    if (this.simulation.keepAspectRatio) {
-      this.scale.setX(Math.min(this.scale.x, this.scale.y));
-      this.scale.setY(Math.min(this.scale.x, this.scale.y));
-    }
-
     // drawing options
     p5.background(15);
     p5.noStroke();
@@ -127,13 +122,18 @@ export default class Flocking {
 
     // move drawing domain
     p5.translate(
-      this.simulation.center.x + this.width / 2,
-      this.simulation.center.y + this.height / 2,
+      this.simulation.parameters.center.x + this.width / 2,
+      this.simulation.parameters.center.y + this.height / 2,
     );
 
     // draw the background of the simulation domain
     p5.fill(30);
-    p5.rect(0, 0, this.simulation.width * this.scale.x, this.simulation.height * this.scale.y);
+    p5.rect(
+      0,
+      0,
+      this.simulation.parameters.width * this.scale,
+      this.simulation.parameters.height * this.scale,
+    );
 
     // compute boid updates
     if (this.simulation.speedController.speed > 0) {
@@ -159,12 +159,12 @@ export default class Flocking {
         boid.velocity.clone().normalize(),
       );
       p5.triangle(
-        heading.x * this.scale.x,
-        heading.y * this.scale.y,
-        heading.clone().rotateAround(boid.position, 4 * Math.PI / 5).x * this.scale.x,
-        heading.clone().rotateAround(boid.position, 4 * Math.PI / 5).y * this.scale.y,
-        heading.clone().rotateAround(boid.position, 6 * Math.PI / 5).x * this.scale.x,
-        heading.clone().rotateAround(boid.position, 6 * Math.PI / 5).y * this.scale.y,
+        heading.x * this.scale,
+        heading.y * this.scale,
+        heading.clone().rotateAround(boid.position, 4 * Math.PI / 5).x * this.scale,
+        heading.clone().rotateAround(boid.position, 4 * Math.PI / 5).y * this.scale,
+        heading.clone().rotateAround(boid.position, 6 * Math.PI / 5).x * this.scale,
+        heading.clone().rotateAround(boid.position, 6 * Math.PI / 5).y * this.scale,
       );
     });
   }
@@ -174,12 +174,8 @@ export default class Flocking {
    */
   private initSketch() {
     new P5((self: P5) => {
-      self.setup = () => {
-        this.setup(self);
-      };
-      self.draw = () => {
-        this.draw(self);
-      };
+      self.setup = () => this.setup(self);
+      self.draw = () => this.draw(self);
     });
   }
 }

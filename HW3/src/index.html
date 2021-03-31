@@ -15,7 +15,10 @@
                 <button id="openParameters">Parameters</button>
             </nav>
             <div id="parametersDiv">
-                <button id="closeParameters">Close</button>
+                <label for="testInputNumber">Test Custom Number Input System:</label>
+                <div id="testInputNumber" class="inputNumber">
+                    <input>
+                </div>
                 <label for="inputN">Number of boids</label>
                 <input type="number" id="inputN" name="inputN" step="1" value="400">
                 <br>
@@ -30,9 +33,6 @@
                     <input type="number" id="inputCenterX" name="inputCenterX" step="0.00001" value="0">
                     <input type="number" id="inputCenterY" name="inputCenterY" step="0.00001" value="0">
                 </div>
-                <br>
-                <label for="inputAspectRatio">Keep aspect ratio?</label>
-                <input type="checkbox" id="inputAspectRatio" name="inputAspectRatio" checked="true">
                 <br>
                 <label for="inputStart">Starting position of the boids</label>
                 <div id="inputStart" class="threejsVector2Input"> <!-- custom input type, see threejsVector2Input.ts for interaction details (once I make it) -->
@@ -61,10 +61,8 @@
                 <label for="inputVLimit">Velocity limiter</label>
                 <input type="number" id="inputVLimit" name="inputVLimit" step="0.00001" value="1">
                 <br>
-                <!--<br>
-                <label for=""></label>
-                <input type="number" id="" name="" step="0.00001" value="">-->
-                <button id="applyParameters">Apply</button>
+                <br>
+                <div id="runController"></div>
             </div>
             <div id="sketch"></div>
         </main>
