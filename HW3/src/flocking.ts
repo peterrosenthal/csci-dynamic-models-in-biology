@@ -186,6 +186,14 @@ export default class Flocking {
       this.simulation.dataController.groupVelocity.push(groupVelocity);
       this.simulation.dataController.groupSpeed.push(groupVelocity.length());
       this.simulation.dataController.alignment.push(alignment);
+      if (this.timestep == 1) {
+        this.simulation.dataController.c1.push(this.simulation.parameters.c1);
+        this.simulation.dataController.c2.push(this.simulation.parameters.c2);
+        this.simulation.dataController.c3.push(this.simulation.parameters.c3);
+        this.simulation.dataController.c4.push(this.simulation.parameters.c4);
+        this.simulation.dataController.R.push(this.simulation.parameters.R);
+        this.simulation.dataController.repellantStrength.push(this.simulation.parameters.repellantStrength);
+      }
     } else {
       const index: number = this.timestep + (this.simulation.runController.runNum - 1) * this.maxTimestep - 1;
       this.simulation.dataController.centerOfMass[index] = centerOfMass;

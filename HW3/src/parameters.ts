@@ -12,6 +12,11 @@ export default class Parameters {
   public N: number;
 
   /**
+   * @member {number} R - number of random repellants.
+   */
+  public R: number;
+
+  /**
    * @member {number} width - The width of the simulation domain.
    */
   public width: number;
@@ -66,11 +71,17 @@ export default class Parameters {
    */
   public vlimit: number;
 
+  /**
+   * @member {number} repellantStrength - how many times stronger the repellants are than boids.
+   */
+  public repellantStrength: number;
+
   public testInputNumber: InputNumber;
 
   private simulation: Simulation;
 
   private NElement: HTMLInputElement;
+  private RElement: HTMLInputElement;
   private widthElement: HTMLInputElement;
   private heightElement: HTMLInputElement;
   private centerXElement: HTMLInputElement;
@@ -84,6 +95,22 @@ export default class Parameters {
   private c3Element: HTMLInputElement;
   private c4Element: HTMLInputElement;
   private vlimitElement: HTMLInputElement;
+  private repellantStrengthElement: HTMLInputElement;
+
+  private saveN: number;
+  private saveR: number;
+  private saveWidth: number;
+  private saveHeight: number;
+  private saveCenter: THREE.Vector2;
+  private saveStart: THREE.Vector2;
+  private saveP: number;
+  private saveV: number;
+  private saveC1: number;
+  private saveC2: number;
+  private saveC3: number;
+  private saveC4: number;
+  private saveVlimit: number;
+  private saveRepellantStrength: number;
 
   /**
    * Reads parameter values from the DOM, and sets up on-click
@@ -95,6 +122,7 @@ export default class Parameters {
     this.simulation = simulation;
 
     this.NElement = document.getElementById('inputN') as HTMLInputElement;
+    this.RElement = document.getElementById('inputR') as HTMLInputElement;
     this.widthElement = document.getElementById('inputWidth') as HTMLInputElement;
     this.heightElement = document.getElementById('inputHeight') as HTMLInputElement;
     this.centerXElement = document.getElementById('inputCenterX') as HTMLInputElement;
@@ -108,6 +136,7 @@ export default class Parameters {
     this.c3Element = document.getElementById('inputC3') as HTMLInputElement;
     this.c4Element = document.getElementById('inputC4') as HTMLInputElement;
     this.vlimitElement = document.getElementById('inputVLimit') as HTMLInputElement;
+    this.repellantStrengthElement = document.getElementById('inputRepellantStrength') as HTMLInputElement;
 
     this.testInputNumber = new InputNumber(
       document.getElementById('testInputNumber'),
@@ -120,6 +149,7 @@ export default class Parameters {
     );
 
     this.N = parseInt(this.NElement.value);
+    this.R = parseInt(this.RElement.value);
     this.width = parseInt(this.widthElement.value);
     this.height = parseInt(this.heightElement.value);
     this.center = new THREE.Vector2(parseInt(this.centerXElement.value), parseInt(this.centerYElement.value));
@@ -131,71 +161,129 @@ export default class Parameters {
     this.c3 = parseFloat(this.c3Element.value);
     this.c4 = parseFloat(this.c4Element.value);
     this.vlimit = parseFloat(this.vlimitElement.value);
+    this.repellantStrength = parseFloat(this.repellantStrengthElement.value);
 
-    this.NElement.addEventListener('focusout', () => {
-      const oldN = this.N;
+    this.saveN = this.N;
+    this.saveR = this.R;
+    this.saveWidth = this.width;
+    this.saveHeight = this.height;
+    this.saveCenter = this.center.clone();
+    this.saveStart = this.start.clone();
+    this.saveP = this.P;
+    this.saveV = this.V;
+    this.saveC1 = this.c1;
+    this.saveC2 = this.c2;
+    this.saveC3 = this.c3;
+    this.saveC4 = this.c4;
+    this.saveVlimit = this.vlimit;
+    this.saveRepellantStrength = this.repellantStrength;
+
+    this.NElement.addEventListener('change', () => {
       this.N = parseInt(this.NElement.value);
-      if (this.N != oldN) {
-        this.simulation.flocking.restart();
-      }
+      this.simulation.flocking.restart();
+      this.saveN = this.N;
+    });
+
+    this.RElement.addEventListener('change', () => {
+      this.R = parseInt(this.RElement.value);
+      this.simulation.flocking.restart();
+      this.saveR = this.R;
     });
 
     this.widthElement.addEventListener('change', () => {
       this.width = parseInt(this.widthElement.value);
       this.simulation.flocking.restart();
+      this.saveWidth = this.width;
     });
 
     this.heightElement.addEventListener('change', () => {
       this.height = parseInt(this.heightElement.value);
       this.simulation.flocking.restart();
+      this.saveHeight = this.height;
     });
 
     this.centerXElement.addEventListener('change', () => {
       this.center.setX(parseInt(this.centerXElement.value));
       this.simulation.flocking.restart();
+      this.saveCenter = this.center.clone();
     });
 
     this.centerYElement.addEventListener('change', () => {
       this.center.setY(parseInt(this.centerYElement.value));
       this.simulation.flocking.restart();
+      this.saveCenter = this.center.clone();
     });
 
     this.startXElement.addEventListener('change', () => {
       this.start.setX(parseInt(this.startXElement.value));
       this.simulation.flocking.restart();
+      this.saveStart = this.start.clone();
     });
 
     this.startYElement.addEventListener('change', () => {
       this.start.setY(parseInt(this.startYElement.value));
       this.simulation.flocking.restart();
+      this.saveStart = this.start.clone();
     });
 
     this.PElement.addEventListener('change', () => {
       this.P = parseFloat(this.PElement.value);
+      this.saveP = this.P;
     });
 
     this.VElement.addEventListener('change', () => {
       this.V = parseFloat(this.VElement.value);
+      this.saveV = this.V;
     });
 
     this.c1Element.addEventListener('change', () => {
       this.c1 = parseFloat(this.c1Element.value);
+      this.saveC1 = this.c1;
     });
 
     this.c2Element.addEventListener('change', () => {
       this.c2 = parseFloat(this.c2Element.value);
+      this.saveC2 = this.c2;
     });
 
     this.c3Element.addEventListener('change', () => {
       this.c3 = parseFloat(this.c3Element.value);
+      this.saveC3 = this.c3;
     });
 
     this.c4Element.addEventListener('change', () => {
       this.c4 = parseFloat(this.c4Element.value);
+      this.saveC4 = this.c4;
     });
 
     this.vlimitElement.addEventListener('change', () => {
       this.vlimit = parseFloat(this.vlimitElement.value);
+      this.saveVlimit = this.vlimit;
     });
+
+    this.repellantStrengthElement.addEventListener('change', () => {
+      this.repellantStrength = parseFloat(this.repellantStrengthElement.value);
+      this.saveRepellantStrength = this.repellantStrength;
+    });
+  }
+
+  /**
+   * Resets paramaters to their values found in the HTML elements
+   */
+  public reset() {
+    this.N = this.saveN;
+    this.R = this.saveR;
+    this.width = this.saveWidth;
+    this.height = this.saveHeight;
+    this.center = this.saveCenter.clone();
+    this.start = this.saveStart.clone();
+    this.P = this.saveP;
+    this.V = this.saveV;
+    this.c1 = this.saveC1;
+    this.c2 = this.saveC2;
+    this.c3 = this.saveC3;
+    this.c4 = this.saveC4;
+    this.vlimit = this.saveVlimit;
+    this.repellantStrength = this.saveRepellantStrength;
   }
 }

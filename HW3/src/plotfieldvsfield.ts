@@ -7,6 +7,7 @@ import * as THREE from 'three';
 export default class P5PlotFieldVsField {
   private fieldX: number[];
   private fieldY: number[];
+  private params: number[];
   private parent: HTMLElement;
   private width: number;
   private height: number;
@@ -18,11 +19,13 @@ export default class P5PlotFieldVsField {
    * @constructor
    * @param {number[]} fieldX - the field to plot along the x-axis.
    * @param {number[]} fieldY - the field to plot along the y-axis.
+   * @param {number[]} params - kind of optional... the parameter that determines coloring.
    * @param {HTMLElement} parent - the HTML element to set as the parent of the p5 sketch.
    */
-  constructor(fieldX: number[], fieldY: number[], parent: HTMLElement) {
+  constructor(fieldX: number[], fieldY: number[], params: number[], parent: HTMLElement) {
     this.fieldX = fieldX;
     this.fieldY = fieldY;
+    this.params = params;
     this.parent = parent;
     this.width = parent.offsetWidth;
     this.height = parent.offsetHeight;
@@ -69,14 +72,15 @@ export default class P5PlotFieldVsField {
     }
 
     p5.background(255);
-    p5.stroke(0, 105, 92);
+    p5.stroke(0, 105, 92); // default color for whatever reason...
     p5.strokeWeight(2.5);
 
+    let runIndex: number = -1;
     for (let i: number = 1; i < Math.max(this.fieldX.length, this.fieldY.length); i++) {
       if (this.fieldX[i] == 1) {
-        // cycle to the next color?
-        // p5.stroke(173, 20, 87);
+        runIndex++;
       } else {
+        p5.stroke(30, 150 - runIndex * (150 / this.params.length), 40 + runIndex * (160 / this.params.length));
         p5.line(
           this.margin * 2 + this.fieldX[i - 1] * this.scale.x,
           p5.height - (this.margin * 2 + this.fieldY[i - 1] * this.scale.y),

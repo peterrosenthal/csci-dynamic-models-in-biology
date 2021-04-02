@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import Simulation from './simulation';
 import P5PlotFieldVsField from './plotfieldvsfield';
+import P5PlotFieldVsParam from './plotfieldvsparam';
 
 /**
  * P5Plotter is a class that holds a bunch of simulation output data,
@@ -14,9 +15,16 @@ export default class DataController {
   public groupSpeed: number[];
   public alignment: number[];
 
+  public c1: number[];
+  public c2: number[];
+  public c3: number[];
+  public c4: number[];
+  public R: number[];
+  public repellantStrength: number[];
+
   public numRuns: number;
 
-  public graphs: P5PlotFieldVsField[];
+  public graphs: any[];
 
   private simulation: Simulation;
 
@@ -33,6 +41,13 @@ export default class DataController {
     this.groupSpeed = [];
     this.alignment = [];
 
+    this.c1 = [];
+    this.c2 = [];
+    this.c3 = [];
+    this.c4 = [];
+    this.R = [];
+    this.repellantStrength = [];
+
     this.graphs = [];
 
     const parents: HTMLElement[] = [
@@ -40,8 +55,8 @@ export default class DataController {
       document.getElementById('graphSketch1'),
       document.getElementById('graphSketch2'),
     ];
-    this.graphs.push(new P5PlotFieldVsField(this.timesteps, this.radiusOfGyration, parents[0]));
-    this.graphs.push(new P5PlotFieldVsField(this.timesteps, this.groupSpeed, parents[1]));
-    this.graphs.push(new P5PlotFieldVsField(this.timesteps, this.alignment, parents[2]));
+    this.graphs.push(new P5PlotFieldVsField(this.timesteps, this.radiusOfGyration, this.c4, parents[0]));
+    this.graphs.push(new P5PlotFieldVsParam(this.alignment, this.c4, this.timesteps, parents[1]));
+    this.graphs.push(new P5PlotFieldVsField(this.timesteps, this.alignment, this.c4, parents[2]));
   }
 }
