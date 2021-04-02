@@ -39,11 +39,18 @@ nav {
   background: #fff;
 }
 
-#sketch {
+#sketches {
   position:fixed;
   top: 0;
   left: 0;
   z-index: -1;
   width: 100vw;
   height: 100vh;
+}
+
+#flockSketch, #graphSketch0, #graphSketch1, #graphSketch2 {
+  width: 49%;
+  height: 49%;
+  margin: 0;
+  display: inline-block;
 }

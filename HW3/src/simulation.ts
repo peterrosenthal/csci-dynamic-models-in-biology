@@ -1,7 +1,8 @@
-import Parameters from './parameters';
-import SpeedController from './speedcontroller';
 import Flocking from './flocking';
+import Parameters from './parameters';
+import DataController from './datacontroller';
 import RunController from './runcontroller';
+import SpeedController from './speedcontroller';
 
 /**
  * Settings for the boids simulation.
@@ -9,6 +10,7 @@ import RunController from './runcontroller';
 export default class Simulation {
   public parameters: Parameters;
   public speedController: SpeedController;
+  public dataController: DataController;
   public flocking: Flocking;
   public runController: RunController;
 
@@ -47,7 +49,8 @@ export default class Simulation {
 
     this.parameters = new Parameters(this);
     this.speedController = new SpeedController(document.getElementById('speedController'), this);
-    this.flocking = new Flocking(document.getElementById('sketch'), this);
+    this.dataController = new DataController(this);
+    this.flocking = new Flocking(document.getElementById('flockSketch'), this);
     this.runController = new RunController(document.getElementById('runController'), this);
     this.flocking.restart(); // TODO: replace with runController
     parametersDiv.style.display = 'none';

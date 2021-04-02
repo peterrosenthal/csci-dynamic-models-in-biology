@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import applyPBC2Vector from './pbc2vec';
 import randn from './randn';
 import Simulation from './simulation';
 
@@ -37,7 +38,7 @@ export default class Boid {
     boids.forEach((boid: Boid) => {
       const r: THREE.Vector2 = new THREE.Vector2().subVectors(boid.position, this.position);
       if (r.length() > 0) {
-        this.applyPBC2Vector(r, 'distance');
+        applyPBC2Vector(r, 'distance', this.simulation);
         v1.add(
           r
             .clone()
@@ -65,28 +66,6 @@ export default class Boid {
       this.velocity.multiplyScalar(this.simulation.parameters.vlimit / this.velocity.length());
     }
     this.position.add(this.velocity);
-    this.applyPBC2Vector(this.position, 'position');
-  }
-
-  /**
-   * Apply periodic boundary conditions (PBC) to a vector.
-   * @param {THREE.Vector2} vector - the vector for PBC to be applied to.
-   * @param {string} vectorType - the vector type, either 'position' or 'distance'.
-   */
-  private applyPBC2Vector(vector: THREE.Vector2, vectorType: string) {
-    const center: THREE.Vector2 = new THREE.Vector2();
-    if (vectorType == 'position') {
-      center.copy(this.simulation.parameters.center);
-    }
-    if (vector.x > center.x + this.simulation.parameters.width / 2) {
-      vector.setX(vector.x - this.simulation.parameters.width);
-    } else if (vector.x < center.x - this.simulation.parameters.width / 2) {
-      vector.setX(vector.x + this.simulation.parameters.width);
-    }
-    if (vector.y > center.y + this.simulation.parameters.height / 2) {
-      vector.setY(vector.y - this.simulation.parameters.height);
-    } else if (vector.y < center.y - this.simulation.parameters.height / 2) {
-      vector.setY(vector.y + this.simulation.parameters.height);
-    }
+    applyPBC2Vector(this.position, 'position', this.simulation);
   }
 }

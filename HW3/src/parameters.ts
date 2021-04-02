@@ -140,61 +140,61 @@ export default class Parameters {
       }
     });
 
-    this.widthElement.addEventListener('compositionupdate', () => {
+    this.widthElement.addEventListener('change', () => {
       this.width = parseInt(this.widthElement.value);
       this.simulation.flocking.restart();
     });
 
-    this.heightElement.addEventListener('compositionupdate', () => {
+    this.heightElement.addEventListener('change', () => {
       this.height = parseInt(this.heightElement.value);
       this.simulation.flocking.restart();
     });
 
-    this.centerXElement.addEventListener('compositionupdate', () => {
+    this.centerXElement.addEventListener('change', () => {
       this.center.setX(parseInt(this.centerXElement.value));
       this.simulation.flocking.restart();
     });
 
-    this.centerYElement.addEventListener('compositionupdate', () => {
+    this.centerYElement.addEventListener('change', () => {
       this.center.setY(parseInt(this.centerYElement.value));
       this.simulation.flocking.restart();
     });
 
-    this.startXElement.addEventListener('compositionupdate', () => {
+    this.startXElement.addEventListener('change', () => {
       this.start.setX(parseInt(this.startXElement.value));
       this.simulation.flocking.restart();
     });
 
-    this.startYElement.addEventListener('compositionupdate', () => {
+    this.startYElement.addEventListener('change', () => {
       this.start.setY(parseInt(this.startYElement.value));
       this.simulation.flocking.restart();
     });
 
-    this.PElement.addEventListener('compositionupdate', () => {
+    this.PElement.addEventListener('change', () => {
       this.P = parseFloat(this.PElement.value);
     });
 
-    this.VElement.addEventListener('compositionupdate', () => {
+    this.VElement.addEventListener('change', () => {
       this.V = parseFloat(this.VElement.value);
     });
 
-    this.c1Element.addEventListener('compositionupdate', () => {
+    this.c1Element.addEventListener('change', () => {
       this.c1 = parseFloat(this.c1Element.value);
     });
 
-    this.c2Element.addEventListener('compositionupdate', () => {
+    this.c2Element.addEventListener('change', () => {
       this.c2 = parseFloat(this.c2Element.value);
     });
 
-    this.c3Element.addEventListener('compositionupdate', () => {
+    this.c3Element.addEventListener('change', () => {
       this.c3 = parseFloat(this.c3Element.value);
     });
 
-    this.c4Element.addEventListener('compositionupdate', () => {
+    this.c4Element.addEventListener('change', () => {
       this.c4 = parseFloat(this.c4Element.value);
     });
 
-    this.vlimitElement.addEventListener('compositionupdate', () => {
+    this.vlimitElement.addEventListener('change', () => {
       this.vlimit = parseFloat(this.vlimitElement.value);
     });
   }

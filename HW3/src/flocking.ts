@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import * as P5 from 'p5';
 import Boid from './boid';
 import Simulation from './simulation';
+import applyPBC2Vector from './pbc2vec';
 
 /**
  * Flocking-like behaivior is simulated using a boids algorithm, visualization is done with p5*js
@@ -14,6 +15,7 @@ export default class Flocking {
   private height: number;
   private scale: number;
   private playingMaxSpeed: boolean;
+  private timestep: number;
 
   /**
    * Simulation is initialized upon creation of the class,
@@ -26,9 +28,10 @@ export default class Flocking {
   constructor(parent: HTMLElement, simulation: Simulation) {
     this.parent = parent;
     this.simulation = simulation;
-    this.width = document.documentElement.clientWidth;
-    this.height = document.documentElement.clientHeight;
+    this.width = parent.offsetWidth;
+    this.height = parent.offsetHeight;
     this.boids = [];
+    this.timestep = 0;
     this.playingMaxSpeed = false;
 
     this.updateScale();
@@ -39,6 +42,7 @@ export default class Flocking {
    * (Re)start the simulation by cleaning out the boids array and repopulating it.
    */
   public restart() {
+    this.timestep = 0;
     this.boids = [];
     for (let i: number = 0; i < this.simulation.parameters.N; i++) {
       this.boids.push(new Boid(this.simulation));
@@ -65,6 +69,8 @@ export default class Flocking {
       const output: number = this.updateBoids(Math.min(this.simulation.parameters.N, 300));
       if (input == output) {
         this.setBoidsUpdated(false);
+        this.timestep++;
+        this.calculateOutputValues();
       }
       if (performance.now() > start + 20) {
         start = performance.now();
@@ -99,6 +105,75 @@ export default class Flocking {
     this.boids.forEach((boid) => {
       boid.updated = value;
     });
+  }
+
+  /**
+   * Caluclates and places in simulation.dataPlotter:
+   * * current timestep
+   * * center of mass
+   * * radius of gyration
+   */
+  private calculateOutputValues() {
+    // calculate the center of mass accounting for PBC according to Wikipedia:
+    const ξ: THREE.Vector2 = new THREE.Vector2();
+    const ζ: THREE.Vector2 = new THREE.Vector2();
+    this.boids.forEach((boid: Boid) => {
+      const θ: THREE.Vector2 = boid.position.clone();
+      θ.sub(this.simulation.parameters.center);
+      θ.setX((θ.x + this.simulation.parameters.width / 2) / this.simulation.parameters.width);
+      θ.setY((θ.y + this.simulation.parameters.height / 2) / this.simulation.parameters.height);
+      θ.multiplyScalar(2 * Math.PI);
+      ξ.add(new THREE.Vector2(Math.cos(θ.x), Math.cos(θ.y)));
+      ζ.add(new THREE.Vector2(Math.sin(θ.x), Math.sin(θ.y)));
+    });
+    ξ.divideScalar(this.boids.length);
+    ζ.divideScalar(this.boids.length);
+    const θ: THREE.Vector2 = new THREE.Vector2(
+      Math.atan2(-ζ.x, -ξ.x) + Math.PI,
+      Math.atan2(-ζ.y, -ξ.y) + Math.PI,
+    );
+    const centerOfMass = θ.clone().divideScalar(2 * Math.PI).multiplyScalar(this.simulation.parameters.width);
+    centerOfMass.add(this.simulation.parameters.center);
+    centerOfMass.setX(centerOfMass.x - this.simulation.parameters.width / 2);
+    centerOfMass.setY(centerOfMass.y - this.simulation.parameters.height / 2);
+
+    // calculate radius of gyration
+    let radiusOfGyration: number = 0;
+    this.boids.forEach((boid: Boid) => {
+      const dist: THREE.Vector2 = new THREE.Vector2().subVectors(centerOfMass, boid.position);
+      applyPBC2Vector(dist, 'distance', this.simulation);
+      radiusOfGyration += dist.lengthSq();
+    });
+    radiusOfGyration = Math.sqrt(radiusOfGyration / this.boids.length);
+
+    // calculate group velocity
+    const groupVelocity: THREE.Vector2 = new THREE.Vector2();
+    if (this.simulation.dataController.centerOfMass.length > 0) {
+      groupVelocity.subVectors(
+        this.simulation.dataController.centerOfMass[this.simulation.dataController.centerOfMass.length - 1],
+        centerOfMass,
+      );
+      applyPBC2Vector(groupVelocity, 'distance', this.simulation);
+    }
+
+    // calculate avg alignment
+    let alignment: number = 0;
+    this.boids.forEach((boidI: Boid) => {
+      this.boids.forEach((boidJ: Boid) => {
+        if (boidI !== boidJ) {
+          alignment += boidI.velocity.dot(boidJ.velocity) /
+            (boidI.velocity.length() * boidJ.velocity.length());
+        }
+      });
+    });
+    alignment /= (this.boids.length * this.boids.length);
+
+    this.simulation.dataController.timesteps.push(this.timestep);
+    this.simulation.dataController.centerOfMass.push(centerOfMass);
+    this.simulation.dataController.radiusOfGyration.push(radiusOfGyration);
+    this.simulation.dataController.groupVelocity.push(groupVelocity);
+    this.simulation.dataController.groupSpeed.push(groupVelocity.length());
+    this.simulation.dataController.alignment.push(alignment);
   }
 
   /**
@@ -142,6 +217,8 @@ export default class Flocking {
       while (updatedBoidsToUpdate > 0) {
         if (updatedBoidsToUpdate == boidsToUpdate) {
           this.setBoidsUpdated(false);
+          this.timestep++;
+          this.calculateOutputValues();
         }
         boidsToUpdate = updatedBoidsToUpdate;
         updatedBoidsToUpdate = this.updateBoids(boidsToUpdate);
