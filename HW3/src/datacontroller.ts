@@ -14,6 +14,8 @@ export default class DataController {
   public groupSpeed: number[];
   public alignment: number[];
 
+  public numRuns: number;
+
   public graphs: P5PlotFieldVsField[];
 
   private simulation: Simulation;

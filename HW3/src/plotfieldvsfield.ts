@@ -26,7 +26,7 @@ export default class P5PlotFieldVsField {
     this.parent = parent;
     this.width = parent.offsetWidth;
     this.height = parent.offsetHeight;
-    this.margin = 15;
+    this.margin = 25;
     this.scale = new THREE.Vector2();
     this.max = new THREE.Vector2();
 
@@ -73,12 +73,17 @@ export default class P5PlotFieldVsField {
     p5.strokeWeight(2.5);
 
     for (let i: number = 1; i < Math.max(this.fieldX.length, this.fieldY.length); i++) {
-      p5.line(
-        this.margin * 2 + this.fieldX[i - 1] * this.scale.x,
-        p5.height - (this.margin * 2 + this.fieldY[i - 1] * this.scale.y),
-        this.margin * 2 + this.fieldX[i] * this.scale.x,
-        p5.height - (this.margin * 2 + this.fieldY[i] * this.scale.y),
-      );
+      if (this.fieldX[i] == 1) {
+        // cycle to the next color?
+        // p5.stroke(173, 20, 87);
+      } else {
+        p5.line(
+          this.margin * 2 + this.fieldX[i - 1] * this.scale.x,
+          p5.height - (this.margin * 2 + this.fieldY[i - 1] * this.scale.y),
+          this.margin * 2 + this.fieldX[i] * this.scale.x,
+          p5.height - (this.margin * 2 + this.fieldY[i] * this.scale.y),
+        );
+      }
     }
 
     p5.stroke(0);
@@ -95,6 +100,35 @@ export default class P5PlotFieldVsField {
       p5.width - this.margin,
       p5.height - this.margin * 2,
     );
+
+    p5.textAlign(p5.CENTER, p5.CENTER);
+    for (let i: number = 0; i < 5; i++) {
+      p5.noStroke();
+      p5.text(
+        this.max.x * i / 4,
+        this.margin * 2 + (this.width - 3 * this.margin) * i / 4,
+        this.height - this.margin,
+      );
+      p5.text(
+        (this.max.y * i / 4).toFixed(2),
+        this.margin * 3 / 4,
+        this.height - this.margin * 2 - (this.height - 3 * this.margin) * i / 4,
+      );
+      p5.stroke(0);
+      p5.strokeWeight(0.9);
+      p5.line(
+        this.margin * 2 + (this.width - 3 * this.margin) * i / 4,
+        this.height - this.margin * 1.8,
+        this.margin * 2 + (this.width - 3 * this.margin) * i / 4,
+        this.height - this.margin * 2.1,
+      );
+      p5.line(
+        this.margin * 1.8,
+        this.height - this.margin * 2 - (this.height - 3 * this.margin) * i / 4,
+        this.margin * 2.1,
+        this.height - this.margin * 2 - (this.height - 3 * this.margin) * i / 4,
+      );
+    }
   }
 
   /**

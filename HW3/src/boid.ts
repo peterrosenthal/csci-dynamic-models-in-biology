@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import applyPBC2Vector from './pbc2vec';
 import randn from './randn';
+import Repellant from './repellant';
 import Simulation from './simulation';
 
 /**
@@ -27,8 +28,9 @@ export default class Boid {
   /**
    * Checks interactions with surrounding boids and updates position accordingly.
    * @param {Boid[]} boids - list of boids to (check) interact with.
+   * @param {Repellant[]} repellants - list of repellants to interact with.
    */
-  public updateFromInteractions(boids: Boid[]) {
+  public updateFromInteractions(boids: Boid[], repellants: Repellant[]) {
     const v1: THREE.Vector2 = new THREE.Vector2();
     const v2: THREE.Vector2 = new THREE.Vector2();
     const v3: THREE.Vector2 = new THREE.Vector2();
@@ -58,6 +60,19 @@ export default class Boid {
           .divideScalar(this.simulation.parameters.N),
       );
     });
+
+    repellants.forEach((repellant: Repellant) => {
+      const r: THREE.Vector2 = new THREE.Vector2().subVectors(repellant.position, this.position);
+      applyPBC2Vector(r, 'distance', this.simulation);
+      v2.sub(
+        r
+          .clone()
+          .multiplyScalar(this.simulation.parameters.c2)
+          .multiplyScalar(this.simulation.parameters.repellantStrength)
+          .divideScalar(r.lengthSq()),
+      );
+    });
+
     if (v3.length() > this.simulation.parameters.vlimit) {
       v3.multiplyScalar(this.simulation.parameters.vlimit / v3.length());
     }

@@ -3,14 +3,18 @@ import * as P5 from 'p5';
 import Boid from './boid';
 import Simulation from './simulation';
 import applyPBC2Vector from './pbc2vec';
+import Repellant from './repellant';
 
 /**
  * Flocking-like behaivior is simulated using a boids algorithm, visualization is done with p5*js
  */
 export default class Flocking {
+  public maxTimestep: number;
+
   private parent: HTMLElement;
   private simulation: Simulation;
   private boids: Boid[];
+  private repellants: Repellant[];
   private width: number;
   private height: number;
   private scale: number;
@@ -31,8 +35,11 @@ export default class Flocking {
     this.width = parent.offsetWidth;
     this.height = parent.offsetHeight;
     this.boids = [];
+    this.repellants = [];
     this.timestep = 0;
     this.playingMaxSpeed = false;
+
+    this.maxTimestep = -1;
 
     this.updateScale();
     this.initSketch();
@@ -44,8 +51,12 @@ export default class Flocking {
   public restart() {
     this.timestep = 0;
     this.boids = [];
+    this.repellants = [];
     for (let i: number = 0; i < this.simulation.parameters.N; i++) {
       this.boids.push(new Boid(this.simulation));
+    }
+    for (let i: number = 0; i < this.simulation.parameters.R; i++) {
+      this.repellants.push(new Repellant(this.simulation));
     }
   }
 
@@ -89,7 +100,7 @@ export default class Flocking {
     let boidsUpdated: number = 0;
     this.boids.forEach((boid) => {
       if (!boid.updated && boidsUpdated < amount) {
-        boid.updateFromInteractions(this.boids);
+        boid.updateFromInteractions(this.boids, this.repellants);
         boid.updated = true;
         boidsUpdated++;
       }
@@ -148,9 +159,9 @@ export default class Flocking {
 
     // calculate group velocity
     const groupVelocity: THREE.Vector2 = new THREE.Vector2();
-    if (this.simulation.dataController.centerOfMass.length > 0) {
+    if (this.simulation.dataController.centerOfMass.length > 1 && this.timestep > 2) {
       groupVelocity.subVectors(
-        this.simulation.dataController.centerOfMass[this.simulation.dataController.centerOfMass.length - 1],
+        this.simulation.dataController.centerOfMass[this.timestep - 2],
         centerOfMass,
       );
       applyPBC2Vector(groupVelocity, 'distance', this.simulation);
@@ -168,12 +179,26 @@ export default class Flocking {
     });
     alignment /= (this.boids.length * this.boids.length);
 
-    this.simulation.dataController.timesteps.push(this.timestep);
-    this.simulation.dataController.centerOfMass.push(centerOfMass);
-    this.simulation.dataController.radiusOfGyration.push(radiusOfGyration);
-    this.simulation.dataController.groupVelocity.push(groupVelocity);
-    this.simulation.dataController.groupSpeed.push(groupVelocity.length());
-    this.simulation.dataController.alignment.push(alignment);
+    if (this.simulation.runController.realizations == 1) {
+      this.simulation.dataController.timesteps.push(this.timestep);
+      this.simulation.dataController.centerOfMass.push(centerOfMass);
+      this.simulation.dataController.radiusOfGyration.push(radiusOfGyration);
+      this.simulation.dataController.groupVelocity.push(groupVelocity);
+      this.simulation.dataController.groupSpeed.push(groupVelocity.length());
+      this.simulation.dataController.alignment.push(alignment);
+    } else {
+      const index: number = this.timestep + (this.simulation.runController.runNum - 1) * this.maxTimestep - 1;
+      this.simulation.dataController.centerOfMass[index] = centerOfMass;
+      this.simulation.dataController.radiusOfGyration[index] = (1 - 1 /
+        this.simulation.runController.realizations) * this.simulation.dataController.radiusOfGyration[index] +
+        1 / this.simulation.runController.realizations * radiusOfGyration;
+      this.simulation.dataController.groupSpeed[index] = (1 - 1 /
+        this.simulation.runController.realizations) * this.simulation.dataController.groupSpeed[index] +
+        1 / this.simulation.runController.realizations * groupVelocity.length();
+      this.simulation.dataController.alignment[index] = (1 - 1 /
+        this.simulation.runController.realizations) * this.simulation.dataController.alignment[index] +
+        1 / this.simulation.runController.realizations * alignment;
+    }
   }
 
   /**
@@ -228,6 +253,12 @@ export default class Flocking {
       this.runMax(performance.now());
     }
 
+    // draw the repellants
+    p5.fill(150);
+    this.repellants.forEach((repellant: Repellant) => {
+      p5.circle(repellant.position.x * this.scale, repellant.position.y * this.scale, 4);
+    });
+
     // draw the boids
     p5.fill(190);
     this.boids.forEach((boid) => {
@@ -244,6 +275,14 @@ export default class Flocking {
         heading.clone().rotateAround(boid.position, 6 * Math.PI / 5).y * this.scale,
       );
     });
+
+    if (this.maxTimestep > 0 && this.timestep >= this.maxTimestep) {
+      // this.simulation.speedController.pause();
+      if (this.simulation.runController.run == 0) {
+        this.simulation.runController.run++;
+      }
+      this.simulation.runController.nextRunStep();
+    }
   }
 
   /**

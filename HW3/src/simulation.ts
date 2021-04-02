@@ -52,7 +52,6 @@ export default class Simulation {
     this.dataController = new DataController(this);
     this.flocking = new Flocking(document.getElementById('flockSketch'), this);
     this.runController = new RunController(document.getElementById('runController'), this);
-    this.flocking.restart(); // TODO: replace with runController
     parametersDiv.style.display = 'none';
   }
 }
