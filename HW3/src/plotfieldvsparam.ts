@@ -57,6 +57,8 @@ export default class P5PlotFieldVsField {
    */
   private draw(p5: P5) {
     // TODO: fix this scaling sitch
+    this.max.setX(this.param[this.param.length - 1]);
+    this.min.setX(this.param[0]);
     this.scale.setX(this.param.length);
     if (this.field.length > 0) {
       for (let i: number = 0; i < this.field.length; i++) {
@@ -83,6 +85,7 @@ export default class P5PlotFieldVsField {
       }
     }
     for (let i: number = 0; i < fieldAvg.length; i++) {
+      // gives inaccurate results up untill the graph is fully filled, then it should be good
       fieldAvg[i] /= this.field.length / (runIndex + 1);
     }
 
@@ -127,7 +130,7 @@ export default class P5PlotFieldVsField {
       p5.noStroke();
       if (this.param.length > 10) {
         p5.text(
-          this.max.x * i / 4,
+          (this.min.x + this.max.x * i / 4).toFixed(2),
           this.margin * 2 + (this.width - 3 * this.margin) * i / 4,
           this.height - this.margin,
         );
