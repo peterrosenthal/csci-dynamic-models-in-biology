@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import InputNumber from './inputnumber';
-import Simulation from './simulation';
+import InputNumber from '../../ui/inputnumber';
+import Simulation from '../simulation';
 
 /**
  * Controls and stores the user adjusted parameters.

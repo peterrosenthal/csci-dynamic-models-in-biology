@@ -1,3 +1,3 @@
-import Simulation from './simulation';
+import Simulation from './simulation/simulation';
 
 new Simulation();

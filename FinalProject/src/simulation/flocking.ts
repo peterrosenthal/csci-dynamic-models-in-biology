@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 import * as P5 from 'p5';
-import Boid from './boid';
+import Boid from './objects/boid';
 import Simulation from './simulation';
-import applyPBC2Vector from './pbc2vec';
-import Repellant from './repellant';
+import applyPBC2Vector from '../utils/pbc2vec';
+import Repellant from './objects/repellant';
 
 /**
  * Flocking-like behaivior is simulated using a boids algorithm, visualization is done with p5*js

@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import applyPBC2Vector from './pbc2vec';
-import randn from './randn';
+import applyPBC2Vector from '../../utils/pbc2vec';
+import randn from '../../utils/randn';
 import Repellant from './repellant';
-import Simulation from './simulation';
+import Simulation from '../simulation';
 
 /**
  * Boid - A bird-like individual with certain behaviors, many of them make a flock

@@ -1,6 +1,5 @@
 import * as P5 from 'p5';
 import * as THREE from 'three';
-import DataController from './datacontroller';
 
 /**
  * P5PlotFieldVsParam: a class to plot a specified field vs a specifed parameter.

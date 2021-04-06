@@ -1,4 +1,4 @@
-import Simulation from './simulation';
+import Simulation from '../simulation';
 
 /**
  * Base class for controller elements to extend.

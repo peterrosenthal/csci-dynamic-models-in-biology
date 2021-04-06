@@ -1,8 +1,8 @@
 import Flocking from './flocking';
-import Parameters from './parameters';
-import DataController from './datacontroller';
-import RunController from './runcontroller';
-import SpeedController from './speedcontroller';
+import Parameters from './controllers/parameters';
+import DataController from './controllers/datacontroller';
+import RunController from './controllers/runcontroller';
+import SpeedController from './controllers/speedcontroller';
 
 /**
  * Settings for the boids simulation.

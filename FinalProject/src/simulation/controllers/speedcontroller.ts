@@ -1,5 +1,5 @@
 import * as P5 from 'p5';
-import Simulation from './simulation';
+import Simulation from '../simulation';
 
 interface SnapPoint {
   position: number,

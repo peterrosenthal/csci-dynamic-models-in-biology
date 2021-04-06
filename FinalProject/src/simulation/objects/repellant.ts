@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Simulation from './simulation';
+import Simulation from '../simulation';
 
 /**
  * An object to repel boids

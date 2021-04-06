@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Simulation from './simulation';
+import Simulation from '../simulation/simulation';
 
 /**
  * A utility function to apply periodic boundary conditions to a vector.

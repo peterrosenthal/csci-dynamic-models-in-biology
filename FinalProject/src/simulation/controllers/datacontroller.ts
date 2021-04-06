@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import Simulation from './simulation';
-import P5PlotFieldVsField from './plotfieldvsfield';
-import P5PlotFieldVsParam from './plotfieldvsparam';
+import Simulation from '../simulation';
+import P5PlotFieldVsField from '../../graph/plotfieldvsfield';
+import P5PlotFieldVsParam from '../../graph/plotfieldvsparam';
 
 /**
  * P5Plotter is a class that holds a bunch of simulation output data,
