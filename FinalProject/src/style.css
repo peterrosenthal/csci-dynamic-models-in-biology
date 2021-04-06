@@ -1,0 +1,56 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+nav {
+  position: relative;
+}
+
+.speedController {
+  position: absolute;
+  top: 10px;
+  left: 400px;
+  width: 250px;
+  height: 50px;
+}
+
+.inputNumber {
+  position: relative;
+  text-align: center;
+  margin: 0.2em;
+  width: 8em;
+  height: 4em;
+}
+
+.inputNumber input {
+  width: 80%;
+  text-align: center;
+  margin: auto;
+}
+
+.inputNumber canvas {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+#parametersDiv {
+  background: #fff;
+}
+
+#sketches {
+  position:fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+}
+
+#flockSketch, #graphSketch0, #graphSketch1, #graphSketch2 {
+  width: 49%;
+  height: 49%;
+  margin: 0;
+  display: inline-block;
+}
