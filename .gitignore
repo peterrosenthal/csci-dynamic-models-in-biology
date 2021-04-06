@@ -1,2 +1,11 @@
 .idea/workspace.xml
 .idea/shelf/
+
+**/.yarn/
+**/.pnp.js
+
+HW1/part-*
+HW3/src/main.js
+FinalProject/src/main.js
+PaperPresentation/images/**/
+
