@@ -1,7 +1,7 @@
 import Flocking from './flocking';
 import Parameters from './controllers/parameters';
 import DataController from './controllers/datacontroller';
-import RunController from './controllers/runcontroller';
+import RunController from './controllers/runcontroller/runcontroller';
 import SpeedController from './controllers/speedcontroller';
 
 /**
