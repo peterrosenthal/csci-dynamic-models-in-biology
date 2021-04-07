@@ -74,7 +74,7 @@ export default class ThenElement extends ControllerElement {
     thenDivOption.innerHTML = 'divide parameter';
 
     thenRepeatOption.value = 'repeat';
-    thenRepeatOption.innerHTML = 'repeat';
+    thenRepeatOption.innerHTML = 'repeat from the beginning';
 
     thenResetOption.value = 'reset';
     thenResetOption.innerHTML = 'reset parameters to initial conditions';

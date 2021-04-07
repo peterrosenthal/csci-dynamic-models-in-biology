@@ -79,9 +79,9 @@ export default class P5PlotFieldVsField {
       }
       if (runIndex >= 0 && runIndex < fieldAvg.length) {
         fieldAvg[runIndex] += this.field[i];
-      } else {
+      }/* else {
         console.log(`something went wrong, runIndex:${runIndex}`);
-      }
+      }*/
     }
     for (let i: number = 0; i < fieldAvg.length; i++) {
       // gives inaccurate results up untill the graph is fully filled, then it should be good

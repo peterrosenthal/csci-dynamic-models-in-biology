@@ -5,7 +5,8 @@ import ControllerElement from './controllerelement';
  * RepeatElement gives a UI to automate run repeats.
  */
 export default class RepeatElement extends ControllerElement {
-  public lines: number;
+  public times: number;
+  public timesLeft: number;
 
   /**
    * @constructor
@@ -15,39 +16,17 @@ export default class RepeatElement extends ControllerElement {
   constructor(id: number, runController: RunController) {
     super(id, 'repeat', runController);
 
-    const linesLabel: HTMLLabelElement = document.createElement<'label'>('label');
-    const linesInput: HTMLInputElement = document.createElement<'input'>('input');
-    const amountLabel: HTMLLabelElement = document.createElement<'label'>('label');
     let amountInput: HTMLInputElement = null;
     const typeSelect: HTMLSelectElement = document.createElement<'select'>('select');
     const timesOption: HTMLOptionElement = document.createElement<'option'>('option');
     const indefiniteOption: HTMLOptionElement = document.createElement<'option'>('option');
-
-    linesLabel.htmlFor = `repeatLines${this.id}`;
-    linesLabel.innerHTML = ' the last ';
-
-    linesInput.id = linesLabel.htmlFor;
-    linesInput.name = linesInput.id;
-    linesInput.type = 'number';
-    linesInput.step = '1';
-    linesInput.value = '1';
-    linesInput.min = '1';
-    // eslint-disable-next-line max-len
-    // linesInput.max = `${this.id - 1}`; I'll figure out putting a cap on this thing later once I figure out how this.id actually translates into lines with then elements getting in the way... maybe then elements shouldn't increment the step number? they could use the same id as the element that comes after it...
-    this.lines = 1;
-    linesInput.addEventListener('change', () => {
-      this.lines = parseInt(linesInput.value);
-    });
-
-    amountLabel.htmlFor = `repeatAmount${this.id}`;
-    amountLabel.innerHTML = ' lines, ';
 
     typeSelect.id = `repeatType${this.id}`;
     typeSelect.addEventListener('change', () => {
       if (typeSelect.value == 'times' && amountInput == null) {
         this.element.removeChild(this.punctuation);
         this.element.removeChild(typeSelect);
-        amountInput = this.createAmountInput(amountLabel.htmlFor);
+        amountInput = this.createAmountInput(`repeatAmountInput${this.id}`);
         this.punctuation.innerHTML = ',<br>';
         this.element.appendChild(amountInput);
         this.element.appendChild(typeSelect);
@@ -59,7 +38,8 @@ export default class RepeatElement extends ControllerElement {
         this.element.appendChild(this.punctuation);
         this.element.removeChild(amountInput);
         amountInput = null;
-        this.lines = -1;
+        this.times = -1;
+        this.timesLeft = -1;
         this.runController.removeElementsAfter(this.id);
       }
     });
@@ -71,13 +51,13 @@ export default class RepeatElement extends ControllerElement {
     timesOption.value = 'times';
     timesOption.innerHTML = 'times';
 
+    this.times = -1;
+    this.timesLeft = -1;
+
     this.punctuation.innerHTML = '.';
 
     typeSelect.appendChild(indefiniteOption);
     typeSelect.appendChild(timesOption);
-    this.element.appendChild(linesLabel);
-    this.element.appendChild(linesInput);
-    this.element.appendChild(amountLabel);
     if (amountInput != null) {
       this.element.appendChild(amountInput);
     }
@@ -99,10 +79,12 @@ export default class RepeatElement extends ControllerElement {
     amountInput.step = '1';
     amountInput.value = '1';
     amountInput.min = '1';
-    console.log(this.lines);
+    this.times = 1;
+    this.timesLeft = 1;
 
     amountInput.addEventListener('change', () => {
-      console.log(this.lines);
+      this.times = parseInt(amountInput.value);
+      this.timesLeft = this.times;
     });
 
     return amountInput;

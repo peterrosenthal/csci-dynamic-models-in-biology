@@ -340,14 +340,27 @@ export default class RunController {
       break;
     case 'repeat':
       const repeatElement: RepeatElement = element as RepeatElement;
-      this.run = Math.min(0, this.run - repeatElement.lines);
+      if (repeatElement.timesLeft == 0) {
+        this.run++;
+      } else {
+        this.run = 0;
+        if (repeatElement.timesLeft > 0) {
+          repeatElement.timesLeft--;
+        }
+      }
       this.nextRunStep();
       break;
     case 'reset':
       this.simulation.parameters.reset();
       this.realizations++;
       this.runNum = 0;
-      this.run = 0;
+      this.elements.forEach((e) => {
+        if (e.type == 'repeat') {
+          const repeatElement: RepeatElement = e as RepeatElement;
+          repeatElement.timesLeft = repeatElement.times;
+        }
+      });
+      this.run++;
       this.nextRunStep();
       break;
     }
