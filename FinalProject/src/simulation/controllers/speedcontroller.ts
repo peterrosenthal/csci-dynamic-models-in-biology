@@ -193,6 +193,11 @@ export default class SpeedController {
     new P5((self: P5) => {
       self.setup = () => this.setup(self);
       self.draw = () => this.draw(self);
+      self.windowResized = () => {
+        this.width = this.parent.offsetWidth;
+        this.height = this.parent.offsetHeight;
+        self.resizeCanvas(this.width, this.height);
+      };
     });
   }
 }

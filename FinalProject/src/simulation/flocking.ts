@@ -89,7 +89,7 @@ export default class Flocking {
           this.simulation.runController.nextRunStep();
         }
       }
-      if (performance.now() > start + 20) {
+      if (performance.now() > start + 25) {
         start = performance.now();
         await new Promise((r) => setTimeout(r, 0));
       }
@@ -196,12 +196,21 @@ export default class Flocking {
       this.simulation.dataController.groupSpeed.push(groupVelocity.length());
       this.simulation.dataController.alignment.push(alignment);
       if (this.timestep == 1) {
-        // hmmm, maybe this needs to be re-thought
+        this.simulation.dataController.N.push(this.simulation.parameters.N);
+        this.simulation.dataController.R.push(this.simulation.parameters.R);
+        this.simulation.dataController.width.push(this.simulation.parameters.width);
+        this.simulation.dataController.height.push(this.simulation.parameters.height);
+        this.simulation.dataController.centerX.push(this.simulation.parameters.center.x);
+        this.simulation.dataController.centerY.push(this.simulation.parameters.center.y);
+        this.simulation.dataController.startX.push(this.simulation.parameters.start.x);
+        this.simulation.dataController.startY.push(this.simulation.parameters.start.y);
+        this.simulation.dataController.P.push(this.simulation.parameters.P);
+        this.simulation.dataController.V.push(this.simulation.parameters.V);
         this.simulation.dataController.c1.push(this.simulation.parameters.c1);
         this.simulation.dataController.c2.push(this.simulation.parameters.c2);
         this.simulation.dataController.c3.push(this.simulation.parameters.c3);
         this.simulation.dataController.c4.push(this.simulation.parameters.c4);
-        this.simulation.dataController.R.push(this.simulation.parameters.R);
+        this.simulation.dataController.vlimit.push(this.simulation.parameters.vlimit);
         this.simulation.dataController.repellantStrength.push(this.simulation.parameters.repellantStrength);
       }
     } else {

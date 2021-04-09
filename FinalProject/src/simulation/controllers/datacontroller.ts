@@ -15,11 +15,21 @@ export default class DataController {
   public groupSpeed: number[];
   public alignment: number[];
 
+  public N: number[];
+  public R: number[];
+  public width: number[];
+  public height: number[];
+  public centerX: number[];
+  public centerY: number[];
+  public startX: number[];
+  public startY: number[];
+  public P: number[];
+  public V: number[];
   public c1: number[];
   public c2: number[];
   public c3: number[];
   public c4: number[];
-  public R: number[];
+  public vlimit: number[];
   public repellantStrength: number[];
 
   public numRuns: number;
@@ -41,11 +51,21 @@ export default class DataController {
     this.groupSpeed = [];
     this.alignment = [];
 
+    this.N = [];
+    this.R = [];
+    this.width = [];
+    this.height = [];
+    this.centerX = [];
+    this.centerY = [];
+    this.startX = [];
+    this.startY = [];
+    this.P = [];
+    this.V = [];
     this.c1 = [];
     this.c2 = [];
     this.c3 = [];
     this.c4 = [];
-    this.R = [];
+    this.vlimit = [];
     this.repellantStrength = [];
 
     this.graphs = [];
