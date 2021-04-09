@@ -181,7 +181,7 @@ export default class SpeedController {
       this.handlePosition = closestSnapPoint.position;
     }
     p5.circle(this.handlePosition, this.height / 2, radius);
-    p5.fill(255);
+    p5.fill(125);
     p5.text(closestSnapPoint.label, this.width / 2, this.height / 2 + this.thickness * 3);
     this.speed = closestSnapPoint.value;
   }

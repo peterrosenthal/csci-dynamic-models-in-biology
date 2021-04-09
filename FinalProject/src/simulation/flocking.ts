@@ -196,6 +196,7 @@ export default class Flocking {
       this.simulation.dataController.groupSpeed.push(groupVelocity.length());
       this.simulation.dataController.alignment.push(alignment);
       if (this.timestep == 1) {
+        // hmmm, maybe this needs to be re-thought
         this.simulation.dataController.c1.push(this.simulation.parameters.c1);
         this.simulation.dataController.c2.push(this.simulation.parameters.c2);
         this.simulation.dataController.c3.push(this.simulation.parameters.c3);

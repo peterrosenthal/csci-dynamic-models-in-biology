@@ -5,7 +5,9 @@ import RunController from './controllers/runcontroller/runcontroller';
 import SpeedController from './controllers/speedcontroller';
 
 /**
- * Settings for the boids simulation.
+ * Parent object for the boids simulation.
+ * Passing 'this' around is a crude way for the
+ * different classes of the simulation to communicate.
  */
 export default class Simulation {
   public parameters: Parameters;
@@ -18,40 +20,18 @@ export default class Simulation {
    * @constructor
    */
   constructor() {
-    // TODO: move play, pause, and reset buttons to the SpeedController?
-    const playButton: HTMLButtonElement = document.getElementById('playButton') as HTMLButtonElement;
-    const pauseButton: HTMLButtonElement = document.getElementById('pauseButton') as HTMLButtonElement;
-    const resetButton: HTMLButtonElement = document.getElementById('resetButton') as HTMLButtonElement;
-    playButton.addEventListener('click', () => {
-      this.speedController.play();
-      playButton.style.display = 'none';
-      pauseButton.style.display = 'inline-block';
-    });
-    pauseButton.addEventListener('click', () => {
-      this.speedController.pause();
-      playButton.style.display = 'inline-block';
-      pauseButton.style.display = 'none';
-    });
-    resetButton.addEventListener('click', () => {
-      this.flocking.restart();
-    });
-
-    // TODO: move parameters open and close buttons to Parameters?
-    const openParameters: HTMLButtonElement = document.getElementById('openParameters') as HTMLButtonElement;
-    const parametersDiv: HTMLDivElement = document.getElementById('parametersDiv') as HTMLDivElement;
-    openParameters.addEventListener('click', () => {
-      if (parametersDiv.style.display == 'none') {
-        parametersDiv.style.display = 'block';
-      } else {
-        parametersDiv.style.display = 'none';
-      }
-    });
-
-    this.parameters = new Parameters(this);
+    this.parameters = new Parameters(
+      document.getElementById('parametersDiv'),
+      document.getElementById('parametersButton') as HTMLButtonElement,
+      this,
+    );
     this.speedController = new SpeedController(document.getElementById('speedController'), this);
     this.dataController = new DataController(this);
     this.flocking = new Flocking(document.getElementById('flockSketch'), this);
-    this.runController = new RunController(document.getElementById('runController'), this);
-    parametersDiv.style.display = 'none';
+    this.runController = new RunController(
+      document.getElementById('runControllerDiv'),
+      document.getElementById('runControllerButton') as HTMLButtonElement,
+      this,
+    );
   }
 }

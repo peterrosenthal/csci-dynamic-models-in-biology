@@ -116,9 +116,11 @@ export default class Parameters {
    * Reads parameter values from the DOM, and sets up on-click
    * functions to update parameter values from the DOM in the future.
    * @constructor
+   * @param {HTMLElement} parent - the HTML div to toggle on and off.
+   * @param {HTMLButtonElement} button - the button that toggles the div on and off.
    * @param {Simulation} simulation - the object housing the simulation.
    */
-  constructor(simulation: Simulation) {
+  constructor(parent: HTMLElement, button: HTMLButtonElement, simulation: Simulation) {
     this.simulation = simulation;
 
     this.NElement = document.getElementById('inputN') as HTMLInputElement;
@@ -264,6 +266,15 @@ export default class Parameters {
     this.repellantStrengthElement.addEventListener('change', () => {
       this.repellantStrength = parseFloat(this.repellantStrengthElement.value);
       this.saveRepellantStrength = this.repellantStrength;
+    });
+
+    parent.style.display = 'none';
+    button.addEventListener('click', () => {
+      if (parent.style.display == 'none') {
+        parent.style.display = 'block';
+      } else {
+        parent.style.display = 'none';
+      }
     });
   }
 

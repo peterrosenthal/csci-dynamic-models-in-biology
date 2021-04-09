@@ -74,6 +74,7 @@ export default class P5PlotFieldVsField {
     }
     let runIndex: number = -1;
     for (let i: number = 0; i < this.field.length; i++) {
+      // maybe keep track of parameter changing instead of timestep resetting to 0?
       if (this.timesteps[i] == 1) {
         runIndex++;
       }

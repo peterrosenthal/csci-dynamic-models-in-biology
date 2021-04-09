@@ -22,9 +22,10 @@ export default class RunController {
   /**
    * @constructor
    * @param {HTMLElement} parent - the parent element to host all of the run contoller UI.
+   * @param {HTMLButtonElement} button - the button element to toggle the parent's visibility on and off.
    * @param {Simulation} simulation - the simulation object that parents all other code.
    */
-  constructor(parent: HTMLElement, simulation: Simulation) {
+  constructor(parent: HTMLElement, button: HTMLButtonElement, simulation: Simulation) {
     this.parent = parent;
     this.simulation = simulation;
 
@@ -41,6 +42,15 @@ export default class RunController {
     this.runNum = 0;
     this.run = 0;
     this.nextRunStep();
+
+    parent.style.display = 'none';
+    button.addEventListener('click', () => {
+      if (parent.style.display == 'none') {
+        parent.style.display = 'block';
+      } else {
+        parent.style.display = 'none';
+      }
+    });
   }
 
   /**
