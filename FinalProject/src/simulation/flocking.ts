@@ -82,6 +82,12 @@ export default class Flocking {
         this.setBoidsUpdated(false);
         this.timestep++;
         this.calculateOutputValues();
+        if (this.maxTimestep > 0 && this.timestep >= this.maxTimestep) {
+          if (this.simulation.runController.run == 0) {
+            this.simulation.runController.run++;
+          }
+          this.simulation.runController.nextRunStep();
+        }
       }
       if (performance.now() > start + 20) {
         start = performance.now();
@@ -105,6 +111,9 @@ export default class Flocking {
         boidsUpdated++;
       }
     });
+    // if (amount == boidsUpdated) {
+    //   this.calculateOutputValues();
+    // }
     return amount - boidsUpdated;
   }
 
@@ -252,6 +261,12 @@ export default class Flocking {
           this.setBoidsUpdated(false);
           this.timestep++;
           this.calculateOutputValues();
+          if (this.maxTimestep > 0 && this.timestep >= this.maxTimestep) {
+            if (this.simulation.runController.run == 0) {
+              this.simulation.runController.run++;
+            }
+            this.simulation.runController.nextRunStep();
+          }
         }
         boidsToUpdate = updatedBoidsToUpdate;
         updatedBoidsToUpdate = this.updateBoids(boidsToUpdate);
@@ -283,14 +298,6 @@ export default class Flocking {
         heading.clone().rotateAround(boid.position, 6 * Math.PI / 5).y * this.scale,
       );
     });
-
-    if (this.maxTimestep > 0 && this.timestep >= this.maxTimestep) {
-      // this.simulation.speedController.pause();
-      if (this.simulation.runController.run == 0) {
-        this.simulation.runController.run++;
-      }
-      this.simulation.runController.nextRunStep();
-    }
   }
 
   /**

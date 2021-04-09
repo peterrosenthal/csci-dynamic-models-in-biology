@@ -57,6 +57,6 @@ export default class DataController {
     ];
     this.graphs.push(new P5PlotFieldVsField(this.timesteps, this.radiusOfGyration, this.c4, parents[0]));
     this.graphs.push(new P5PlotFieldVsParam(this.alignment, this.c4, this.timesteps, parents[1]));
-    this.graphs.push(new P5PlotFieldVsParam(this.timesteps, this.alignment, this.c4, parents[2]));
+    this.graphs.push(new P5PlotFieldVsField(this.timesteps, this.alignment, this.c4, parents[2]));
   }
 }
