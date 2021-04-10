@@ -1,6 +1,7 @@
 import Simulation from '../simulation';
 import P5PlotFieldVsField from '../../graph/plotfieldvsfield';
 import P5PlotFieldVsParam from '../../graph/plotfieldvsparam';
+import P5Plot from '../../graph/p5plot';
 
 interface Data {
   name: string,
@@ -38,7 +39,7 @@ export default class DataController {
 
   public numRuns: number;
 
-  public graphs: any[];
+  public graphs: P5Plot[];
 
   private parent: HTMLElement;
   private simulation: Simulation;
@@ -189,15 +190,19 @@ export default class DataController {
       const closeButton: HTMLButtonElement = document.createElement<'button'>('button');
       const graphParent: HTMLDivElement = document.createElement<'div'>('div');
 
-      gridElement.id = `graph${this.graphs.length}`;
+      const id: number = this.graphs.length;
+
+      gridElement.id = `graph${id}`;
       gridElement.className = 'graphDiv';
 
-      closeButton.id = `closeGraph${this.graphs.length}`;
+      closeButton.id = `closeGraph${id}`;
       closeButton.innerHTML = 'X';
       closeButton.addEventListener('click', () => {
+        this.parent.removeChild(gridElement);
+        this.graphs = this.graphs.filter((graph) => graph.id != id);
       });
 
-      graphParent.id = `graphSketch${this.graphs.length}`;
+      graphParent.id = `graphSketch${id}`;
 
       this.parent.removeChild(addGraphDiv);
       gridElement.appendChild(closeButton);
@@ -232,6 +237,7 @@ export default class DataController {
               `${xAxisData.title} vs ${yAxisData.title}`,
               xAxisData.title,
               yAxisData.title,
+              id,
             ),
           );
         } else {
@@ -244,6 +250,7 @@ export default class DataController {
               `${xAxisData.title} vs\nTime Averaged ${yAxisData.title}`,
               xAxisData.title,
               yAxisData.title,
+              id,
             ),
           );
         }

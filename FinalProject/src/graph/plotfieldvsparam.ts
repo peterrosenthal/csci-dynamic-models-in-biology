@@ -1,23 +1,12 @@
 import * as P5 from 'p5';
-import * as THREE from 'three';
+import P5Plot from './p5plot';
 
 /**
  * P5PlotFieldVsParam: a class to plot a specified field vs a specifed parameter.
  */
-export default class P5PlotFieldVsField {
+export default class P5PlotFieldVsField extends P5Plot {
   private field: number[];
   private param: number[];
-  private timesteps: number[];
-  private parent: HTMLElement;
-  private width: number;
-  private height: number;
-  private margin: number;
-  private max: THREE.Vector2;
-  private min: THREE.Vector2;
-  private scale: THREE.Vector2;
-  private title: string;
-  private xlabel: string;
-  private ylabel: string;
 
   /**
    * @constructor
@@ -28,6 +17,7 @@ export default class P5PlotFieldVsField {
    * @param {string} title - the title of the graph.
    * @param {string} xlabel - the label for the x-axis.
    * @param {string} ylabel - the label for the y-axis.
+   * @param {number} id - identification number of the graph... useful for identification.
    */
   constructor(
     param: number[],
@@ -37,22 +27,15 @@ export default class P5PlotFieldVsField {
     title: string,
     xlabel: string,
     ylabel: string,
+    id: number,
   ) {
+    super(timesteps, parent, title, xlabel, ylabel, id);
+
     this.param = param;
     this.field = field;
-    this.timesteps = timesteps;
-    this.parent = parent;
-    this.width = parent.offsetWidth;
-    this.height = parent.offsetHeight;
-    this.margin = 30;
-    this.max = new THREE.Vector2();
-    this.min = new THREE.Vector2();
-    this.scale = new THREE.Vector2();
+
     this.max.setX(param[param.length - 1]);
     this.min.setX(param[0]);
-    this.title = title;
-    this.xlabel = xlabel;
-    this.ylabel = ylabel;
 
     this.initSketch();
   }
