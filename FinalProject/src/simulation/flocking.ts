@@ -89,7 +89,7 @@ export default class Flocking {
           this.simulation.runController.nextRunStep();
         }
       }
-      if (performance.now() > start + 25) {
+      if (performance.now() > start + 33) {
         start = performance.now();
         await new Promise((r) => setTimeout(r, 0));
       }

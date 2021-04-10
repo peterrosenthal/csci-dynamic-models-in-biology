@@ -160,6 +160,7 @@ export default class DataController {
 
     const addGraphDiv: HTMLDivElement = document.getElementById('addGraphDiv') as HTMLDivElement;
     const newGraphDiv: HTMLDivElement = document.getElementById('newGraphDiv') as HTMLDivElement;
+    const resetButton: HTMLButtonElement = document.getElementById('resetButton') as HTMLButtonElement;
     const addGraphButton: HTMLButtonElement = document.getElementById('addGraphButton') as HTMLButtonElement;
     const newGraphButton: HTMLButtonElement = document.getElementById('newGraphButton') as HTMLButtonElement;
     const xAxisSelect: HTMLSelectElement = document.getElementById('xAxis') as HTMLSelectElement;
@@ -167,17 +168,41 @@ export default class DataController {
 
     newGraphDiv.style.display = 'none';
 
+    resetButton.addEventListener('click', () => {
+      this.simulation.speedController.pause();
+      this.allData.forEach((data) => {
+        while (data.values.length > 0) {
+          data.values.pop();
+        }
+      });
+      this.simulation.runController.run = 0;
+      this.simulation.runController.nextRunStep();
+    });
+
     addGraphButton.addEventListener('click', () => {
       newGraphDiv.style.display = 'block';
       addGraphButton.style.display = 'none';
     });
 
     newGraphButton.addEventListener('click', () => {
+      const gridElement: HTMLDivElement = document.createElement<'div'>('div');
+      const closeButton: HTMLButtonElement = document.createElement<'button'>('button');
       const graphParent: HTMLDivElement = document.createElement<'div'>('div');
+
+      gridElement.id = `graph${this.graphs.length}`;
+      gridElement.className = 'graphDiv';
+
+      closeButton.id = `closeGraph${this.graphs.length}`;
+      closeButton.innerHTML = 'X';
+      closeButton.addEventListener('click', () => {
+      });
+
       graphParent.id = `graphSketch${this.graphs.length}`;
 
       this.parent.removeChild(addGraphDiv);
-      this.parent.appendChild(graphParent);
+      gridElement.appendChild(closeButton);
+      gridElement.appendChild(graphParent);
+      this.parent.appendChild(gridElement);
       this.parent.appendChild(addGraphDiv);
 
       let xAxisData: Data;
@@ -202,7 +227,7 @@ export default class DataController {
             new P5PlotFieldVsField(
               xAxisData.values,
               yAxisData.values,
-              this.c4.values, // find an easy way to ui this one too
+              this.timesteps.values,
               graphParent,
               `${xAxisData.title} vs ${yAxisData.title}`,
               xAxisData.title,
@@ -227,14 +252,5 @@ export default class DataController {
       newGraphDiv.style.display = 'none';
       addGraphButton.style.display = 'block';
     });
-
-    /* const parents: HTMLElement[] = [
-      document.getElementById('graphSketch0'),
-      document.getElementById('graphSketch1'),
-      document.getElementById('graphSketch2'),
-    ];
-    this.graphs.push(new P5PlotFieldVsField(this.timesteps, this.radiusOfGyration, this.c4, parents[0]));
-    this.graphs.push(new P5PlotFieldVsParam(this.alignment, this.c4, this.timesteps, parents[1]));
-    this.graphs.push(new P5PlotFieldVsField(this.timesteps, this.alignment, this.c4, parents[2])); */
   }
 }

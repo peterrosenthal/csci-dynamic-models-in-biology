@@ -63,3 +63,20 @@ body {
   display: grid;
   place-items: center;
 }
+
+.graphDiv {
+  display: grid;
+  grid-template-columns: minmax(15px, 2.5%) 1fr;
+}
+
+.graphDiv button {
+  max-width: 15px;
+  max-height: 15px;
+  margin: 0;
+  padding: 0;
+}
+
+.graphDiv div {
+  height: 450px;
+  padding: 0;
+}
