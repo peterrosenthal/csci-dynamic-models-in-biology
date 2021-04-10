@@ -74,9 +74,45 @@
             </div>
             <div id="sketches">
                 <div id="flockSketch"></div>
-                <div id="graphSketch0"></div>
+                <div id="addGraphDiv">
+                    <button id="addGraphButton">+</button>
+                    <div id="newGraphDiv">
+                        <label for="xAxis">X-Axis</label>
+                        <select id="xAxis" name="xAxis">
+                            <option value="timesteps">Time</option>
+                            <option value="radiusOfGyration">Radius of Gyration</option>
+                            <option value="alignmet">Alignment</option>
+                            <option value="N">N</option>
+                            <option value="R">R</option>
+                            <option value="width">Width</option>
+                            <option value="height">Height</option>
+                            <option value="centerX">Center-X</option>
+                            <option value="centerY">Center-Y</option>
+                            <option value="startX">Start-X</option>
+                            <option value="startY">Start-Y</option>
+                            <option value="P">P</option>
+                            <option value="V">V</option>
+                            <option value="c1">C1</option>
+                            <option value="c2">C2</option>
+                            <option value="c3">C3</option>
+                            <option value="c4">C4</option>
+                            <option value="vlimit">VLimit</option>
+                            <option value="repellantStrength">Repellant Strength</option>
+                        </select>
+                        <br>
+                        <label for="yAxis">Y-Axis</label>
+                        <select id="yAxis" name="yAxis">
+                            <option value="timesteps">Time</option>
+                            <option value="radiusOfGyration">Radius of Gyration</option>
+                            <option value="alignment">Alignment</option>
+                        </select>
+                        <br>
+                        <button id="newGraphButton">Create Graph</button>
+                    </div>
+                </div>
+                <!-- <div id="graphSketch0"></div>
                 <div id="graphSketch1"></div>
-                <div id="graphSketch2"></div>
+                <div id="graphSketch2"></div> -->
             </div>
         </main>
         <script src="main.js"></script>

@@ -15,28 +15,44 @@ export default class P5PlotFieldVsField {
   private max: THREE.Vector2;
   private min: THREE.Vector2;
   private scale: THREE.Vector2;
+  private title: string;
+  private xlabel: string;
+  private ylabel: string;
 
   /**
    * @constructor
-   * @param {number[]} field - the field to plot along the x-axis.
    * @param {number[]} param - the parameter to plot along the y-axis.
+   * @param {number[]} field - the field to plot along the x-axis.
    * @param {number[]} timesteps - the timesteps array.
    * @param {HTMLElement} parent - the HTML element to set as the parent of the p5 sketch.
+   * @param {string} title - the title of the graph.
+   * @param {string} xlabel - the label for the x-axis.
+   * @param {string} ylabel - the label for the y-axis.
    */
   constructor(
-    field: number[], param: number[], timesteps: number[], parent: HTMLElement) {
-    this.field = field;
+    param: number[],
+    field: number[],
+    timesteps: number[],
+    parent: HTMLElement,
+    title: string,
+    xlabel: string,
+    ylabel: string,
+  ) {
     this.param = param;
+    this.field = field;
     this.timesteps = timesteps;
     this.parent = parent;
     this.width = parent.offsetWidth;
     this.height = parent.offsetHeight;
-    this.margin = 25;
+    this.margin = 30;
     this.max = new THREE.Vector2();
     this.min = new THREE.Vector2();
     this.scale = new THREE.Vector2();
     this.max.setX(param[param.length - 1]);
     this.min.setX(param[0]);
+    this.title = title;
+    this.xlabel = xlabel;
+    this.ylabel = ylabel;
 
     this.initSketch();
   }
@@ -55,6 +71,7 @@ export default class P5PlotFieldVsField {
    * @param {p5} p5 - the p5 instance.
    */
   private draw(p5: P5) {
+    // set scale
     // TODO: fix this scaling sitch
     this.max.setX(this.param[this.param.length - 1]);
     this.min.setX(this.param[0]);
@@ -68,6 +85,7 @@ export default class P5PlotFieldVsField {
       this.scale.setY((p5.height - this.margin * 3) / this.max.y);
     }
 
+    // calculate time average field values
     const fieldAvg: number[] = [];
     for (let i: number = 0; i < this.param.length; i++) {
       fieldAvg.push(0);
@@ -89,8 +107,8 @@ export default class P5PlotFieldVsField {
       fieldAvg[i] /= this.field.length / (runIndex + 1);
     }
 
+    // draw graph
     p5.background(255);
-
     if (Math.min(this.param.length, fieldAvg.length) < 2) {
       p5.noStroke();
       p5.fill(0, 105, 92);
@@ -110,6 +128,7 @@ export default class P5PlotFieldVsField {
       }
     }
 
+    // draw axes
     p5.stroke(0);
     p5.strokeWeight(1.5);
     p5.line(
@@ -125,19 +144,36 @@ export default class P5PlotFieldVsField {
       p5.height - this.margin * 2,
     );
 
+    // draw graph title
+    p5.textAlign(p5.CENTER, p5.TOP);
+    p5.noStroke();
+    p5.fill(0);
+    p5.textSize(18);
+    p5.text(this.title, this.width / 2, 0);
+
+    // draw axes labels
     p5.textAlign(p5.CENTER, p5.CENTER);
+    p5.textSize(12);
+    p5.text(this.xlabel, this.width / 2, this.height - this.margin * 3 / 4);
+    p5.push();
+    p5.translate(6, this.height / 2);
+    p5.rotate(Math.PI / 2);
+    p5.text(this.ylabel, 0, 0);
+    p5.pop();
+
+    // draw axes ticks
     for (let i: number = 0; i < 5; i++) {
       p5.noStroke();
       if (this.param.length > 10) {
         p5.text(
           (this.min.x + this.max.x * i / 4).toFixed(2),
           this.margin * 2 + (this.width - 3 * this.margin) * i / 4,
-          this.height - this.margin,
+          this.height - this.margin * 4 / 3,
         );
       }
       p5.text(
         (this.max.y * i / 4).toFixed(2),
-        this.margin * 3 / 4,
+        this.margin * 7 / 6,
         this.height - this.margin * 2 - (this.height - 3 * this.margin) * i / 4,
       );
       p5.stroke(0);
@@ -157,13 +193,14 @@ export default class P5PlotFieldVsField {
         this.height - this.margin * 2 - (this.height - 3 * this.margin) * i / 4,
       );
     }
+    // x-axis gets special ticks if there's less than 10 values
     if (this.param.length > 1 && this.param.length <= 10) {
       for (let i: number = 0; i < this.param.length; i++) {
         p5.noStroke();
         p5.text(
           this.param[i].toFixed(2),
           this.margin * 2 + (this.width - 3 * this.margin) * i / (this.param.length - 1),
-          this.height - this.margin,
+          this.height - this.margin * 4 / 3,
         );
         p5.stroke(0);
         p5.strokeWeight(0.9);
@@ -184,6 +221,11 @@ export default class P5PlotFieldVsField {
     new P5((self: P5) => {
       self.setup = () => this.setup(self);
       self.draw = () => this.draw(self);
+      self.windowResized = () => {
+        this.width = this.parent.offsetWidth;
+        this.height = this.parent.offsetHeight;
+        self.resizeCanvas(this.width, this.height);
+      };
     });
   }
 }

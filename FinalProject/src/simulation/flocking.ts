@@ -166,16 +166,6 @@ export default class Flocking {
     });
     radiusOfGyration = Math.sqrt(radiusOfGyration / this.boids.length);
 
-    // calculate group velocity
-    const groupVelocity: THREE.Vector2 = new THREE.Vector2();
-    if (this.simulation.dataController.centerOfMass.length > 1 && this.timestep > 2) {
-      groupVelocity.subVectors(
-        this.simulation.dataController.centerOfMass[this.timestep - 2],
-        centerOfMass,
-      );
-      applyPBC2Vector(groupVelocity, 'distance', this.simulation);
-    }
-
     // calculate avg alignment
     let alignment: number = 0;
     this.boids.forEach((boidI: Boid) => {
@@ -189,41 +179,38 @@ export default class Flocking {
     alignment /= (this.boids.length * this.boids.length);
 
     if (this.simulation.runController.realizations == 1) {
-      this.simulation.dataController.timesteps.push(this.timestep);
-      this.simulation.dataController.centerOfMass.push(centerOfMass);
-      this.simulation.dataController.radiusOfGyration.push(radiusOfGyration);
-      this.simulation.dataController.groupVelocity.push(groupVelocity);
-      this.simulation.dataController.groupSpeed.push(groupVelocity.length());
-      this.simulation.dataController.alignment.push(alignment);
+      this.simulation.dataController.timesteps.values.push(this.timestep);
+      this.simulation.dataController.radiusOfGyration.values.push(radiusOfGyration);
+      this.simulation.dataController.alignment.values.push(alignment);
       if (this.timestep == 1) {
-        this.simulation.dataController.N.push(this.simulation.parameters.N);
-        this.simulation.dataController.R.push(this.simulation.parameters.R);
-        this.simulation.dataController.width.push(this.simulation.parameters.width);
-        this.simulation.dataController.height.push(this.simulation.parameters.height);
-        this.simulation.dataController.centerX.push(this.simulation.parameters.center.x);
-        this.simulation.dataController.centerY.push(this.simulation.parameters.center.y);
-        this.simulation.dataController.startX.push(this.simulation.parameters.start.x);
-        this.simulation.dataController.startY.push(this.simulation.parameters.start.y);
-        this.simulation.dataController.P.push(this.simulation.parameters.P);
-        this.simulation.dataController.V.push(this.simulation.parameters.V);
-        this.simulation.dataController.c1.push(this.simulation.parameters.c1);
-        this.simulation.dataController.c2.push(this.simulation.parameters.c2);
-        this.simulation.dataController.c3.push(this.simulation.parameters.c3);
-        this.simulation.dataController.c4.push(this.simulation.parameters.c4);
-        this.simulation.dataController.vlimit.push(this.simulation.parameters.vlimit);
-        this.simulation.dataController.repellantStrength.push(this.simulation.parameters.repellantStrength);
+        this.simulation.dataController.N.values.push(this.simulation.parameters.N);
+        this.simulation.dataController.R.values.push(this.simulation.parameters.R);
+        this.simulation.dataController.width.values.push(this.simulation.parameters.width);
+        this.simulation.dataController.height.values.push(this.simulation.parameters.height);
+        this.simulation.dataController.centerX.values.push(this.simulation.parameters.center.x);
+        this.simulation.dataController.centerY.values.push(this.simulation.parameters.center.y);
+        this.simulation.dataController.startX.values.push(this.simulation.parameters.start.x);
+        this.simulation.dataController.startY.values.push(this.simulation.parameters.start.y);
+        this.simulation.dataController.P.values.push(this.simulation.parameters.P);
+        this.simulation.dataController.V.values.push(this.simulation.parameters.V);
+        this.simulation.dataController.c1.values.push(this.simulation.parameters.c1);
+        this.simulation.dataController.c2.values.push(this.simulation.parameters.c2);
+        this.simulation.dataController.c3.values.push(this.simulation.parameters.c3);
+        this.simulation.dataController.c4.values.push(this.simulation.parameters.c4);
+        this.simulation.dataController.vlimit.values.push(this.simulation.parameters.vlimit);
+        this.simulation.dataController.repellantStrength.values.push(
+          this.simulation.parameters.repellantStrength,
+        );
       }
     } else {
       const index: number = this.timestep + (this.simulation.runController.runNum - 1) * this.maxTimestep - 1;
-      this.simulation.dataController.centerOfMass[index] = centerOfMass;
-      this.simulation.dataController.radiusOfGyration[index] = (1 - 1 /
-        this.simulation.runController.realizations) * this.simulation.dataController.radiusOfGyration[index] +
+      this.simulation.dataController.radiusOfGyration.values[index] = (1 - 1 /
+        this.simulation.runController.realizations) *
+        this.simulation.dataController.radiusOfGyration.values[index] +
         1 / this.simulation.runController.realizations * radiusOfGyration;
-      this.simulation.dataController.groupSpeed[index] = (1 - 1 /
-        this.simulation.runController.realizations) * this.simulation.dataController.groupSpeed[index] +
-        1 / this.simulation.runController.realizations * groupVelocity.length();
-      this.simulation.dataController.alignment[index] = (1 - 1 /
-        this.simulation.runController.realizations) * this.simulation.dataController.alignment[index] +
+      this.simulation.dataController.alignment.values[index] = (1 - 1 /
+        this.simulation.runController.realizations) *
+        this.simulation.dataController.alignment.values[index] +
         1 / this.simulation.runController.realizations * alignment;
     }
   }
@@ -317,6 +304,11 @@ export default class Flocking {
     new P5((self: P5) => {
       self.setup = () => this.setup(self);
       self.draw = () => this.draw(self);
+      self.windowResized = () => {
+        this.width = this.parent.offsetWidth;
+        this.height = this.parent.offsetHeight;
+        self.resizeCanvas(this.width, this.height);
+      };
     });
   }
 }

@@ -26,7 +26,7 @@ export default class Simulation {
       this,
     );
     this.speedController = new SpeedController(document.getElementById('speedController'), this);
-    this.dataController = new DataController(this);
+    this.dataController = new DataController(document.getElementById('sketches'), this);
     this.flocking = new Flocking(document.getElementById('flockSketch'), this);
     this.runController = new RunController(
       document.getElementById('runControllerDiv'),

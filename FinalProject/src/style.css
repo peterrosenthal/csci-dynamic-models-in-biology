@@ -48,27 +48,18 @@ body {
 
 #sketches {
   width: 100%;
-  height: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-#sketches div {
+#sketches > div {
   flex: 0 1 600px;
   height: 450px;
   margin: 15px;
 }
 
-/*#sketches {
-  z-index: -1;
-  width: 100%;
-  height: 100vh;
+#addGraphDiv {
+  display: grid;
+  place-items: center;
 }
-
-#flockSketch, #graphSketch0, #graphSketch1, #graphSketch2 {
-  width: 49%;
-  height: 49%;
-  margin: 0;
-  display: inline-block;
-}*/
