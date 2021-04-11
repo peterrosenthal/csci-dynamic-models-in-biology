@@ -23,6 +23,9 @@ export default class SpeedController {
   private handlePosition: number;
   private snapPoints: SnapPoint[];
 
+  private playButton: HTMLButtonElement;
+  private pauseButton: HTMLButtonElement;
+
   /**
    * @param {HTMLCanvasElement} parent - p5 canvas element.
    * @param {Simulation} simulation - the settings object for simulation.
@@ -40,20 +43,31 @@ export default class SpeedController {
     this.updateSnapPoints();
     this.pause();
     this.initSketch();
+    this.initPlayPauseButtons();
   }
 
   /**
    * Sets the handle position and speed values to the third snap point (default 'play' value).
+   * Makes the play button display:none and the pause button display:inline.
    */
   public play() {
+    if (this.playButton != undefined && this.pauseButton != undefined) {
+      this.playButton.style.display = 'none';
+      this.pauseButton.style.display = 'inline';
+    }
     this.handlePosition = this.snapPoints[2].position;
     this.speed = this.snapPoints[2].value;
   }
 
   /**
    * Sets the handle position and speed to the last snap point (default 'pause' value).
+   * Makes the play button display:inline and the pause button display:none.
    */
   public pause() {
+    if (this.playButton != undefined && this.pauseButton != undefined) {
+      this.playButton.style.display = 'inline';
+      this.pauseButton.style.display = 'none';
+    }
     this.handlePosition = this.snapPoints[this.snapPoints.length - 1].position;
     this.speed = this.snapPoints[this.snapPoints.length - 1].position;
   }
@@ -184,6 +198,17 @@ export default class SpeedController {
     p5.fill(125);
     p5.text(closestSnapPoint.label, this.width / 2, this.height / 2 + this.thickness * 3);
     this.speed = closestSnapPoint.value;
+
+    if (this.playButton != undefined && this.pauseButton != undefined) {
+      if (this.speed == 0 && this.pauseButton.style.display != 'none') {
+        this.playButton.style.display = 'inline';
+        this.pauseButton.style.display = 'none';
+      }
+      if (this.speed != 0 && this.playButton.style.display != 'none') {
+        this.playButton.style.display = 'none';
+        this.pauseButton.style.display = 'inline';
+      }
+    }
   }
 
   /**
@@ -199,5 +224,16 @@ export default class SpeedController {
         self.resizeCanvas(this.width, this.height);
       };
     });
+  }
+
+  /**
+   * Adds play and pause event listeners to HTML DOM elements #playButton and #pauseButton.
+   */
+  private initPlayPauseButtons() {
+    this.playButton = document.getElementById('playButton') as HTMLButtonElement;
+    this.pauseButton = document.getElementById('pauseButton') as HTMLButtonElement;
+    this.pause();
+    this.playButton.addEventListener('click', () => this.play());
+    this.pauseButton.addEventListener('click', () => this.pause());
   }
 }
