@@ -28,6 +28,7 @@ export default class RunElement extends ControllerElement {
    */
   private addRunType() {
     this.runTypeElement = document.createElement<'span'>('span');
+    const typeLabel: HTMLLabelElement = document.createElement<'label'>('label');
     const runTypeSelect: HTMLSelectElement = document.createElement<'select'>('select');
     const runIndefiniteOption: HTMLOptionElement = document.createElement<'option'>('option');
     const runForOption: HTMLOptionElement = document.createElement<'option'>('option');
@@ -36,6 +37,9 @@ export default class RunElement extends ControllerElement {
     const widthTmpOption: HTMLOptionElement = document.getElementById('widthTmpOption') as HTMLOptionElement;
 
     const id: string = `runType${this.id}`;
+
+    typeLabel.htmlFor = id;
+    typeLabel.innerHTML = ' ';
 
     runTypeSelect.id = id;
     runTypeSelect.name = id;
@@ -85,6 +89,7 @@ export default class RunElement extends ControllerElement {
     widthTmpSelect.style.display = 'inline';
     runTypeSelect.style.width = `${widthTmpSelect.offsetWidth}px`;
     widthTmpSelect.style.display = 'none';
+    this.element.appendChild(typeLabel);
     this.runTypeElement.appendChild(runTypeSelect);
     this.element.appendChild(this.runTypeElement);
     this.element.appendChild(this.punctuation);

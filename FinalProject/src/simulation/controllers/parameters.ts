@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import InputNumber from '../../ui/inputnumber';
 import Simulation from '../simulation';
 
 /**
@@ -75,8 +74,6 @@ export default class Parameters {
    * @member {number} repellantStrength - how many times stronger the repellants are than boids.
    */
   public repellantStrength: number;
-
-  public testInputNumber: InputNumber;
 
   private simulation: Simulation;
 
@@ -261,7 +258,7 @@ export default class Parameters {
     parent.style.display = 'none';
     button.addEventListener('click', () => {
       if (parent.style.display == 'none') {
-        parent.style.display = 'block';
+        parent.style.display = 'grid';
       } else {
         parent.style.display = 'none';
       }

@@ -18,11 +18,15 @@ export default class RepeatElement extends ControllerElement {
 
     let amountInput: HTMLInputElement = null;
     const typeSelect: HTMLSelectElement = document.createElement<'select'>('select');
+    const typeLabel: HTMLLabelElement = document.createElement<'label'>('label');
     const timesOption: HTMLOptionElement = document.createElement<'option'>('option');
     const indefiniteOption: HTMLOptionElement = document.createElement<'option'>('option');
 
     const widthTmpSelect: HTMLSelectElement = document.getElementById('widthTmpSelect') as HTMLSelectElement;
     const widthTmpOption: HTMLOptionElement = document.getElementById('widthTmpOption') as HTMLOptionElement;
+
+    typeLabel.htmlFor = `repeatType${this.id}`;
+    typeLabel.innerHTML = ' ';
 
     typeSelect.id = `repeatType${this.id}`;
     typeSelect.addEventListener('change', () => {
@@ -75,6 +79,7 @@ export default class RepeatElement extends ControllerElement {
     if (amountInput != null) {
       this.element.appendChild(amountInput);
     }
+    this.element.appendChild(typeLabel);
     this.element.appendChild(typeSelect);
     this.element.appendChild(this.punctuation);
     this.runController.parent.appendChild(this.element);

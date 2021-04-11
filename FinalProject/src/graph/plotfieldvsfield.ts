@@ -78,8 +78,8 @@ export default class P5PlotFieldVsField extends P5Plot {
     }
 
     // set draw characteristics
-    p5.background(255);
-    p5.stroke(0, 105, 92); // default color for whatever reason...
+    p5.background(236, 239, 241);
+    p5.stroke(136, 14, 79);
     p5.strokeWeight(2.5);
 
     // find number of runs, this determines coloring
@@ -96,7 +96,11 @@ export default class P5PlotFieldVsField extends P5Plot {
       if (this.timesteps[i] == 1) {
         runIndex++;
       } else {
-        p5.stroke(30, 150 - runIndex * (150 / numRuns), 40 + runIndex * (160 / numRuns));
+        p5.stroke(
+          21 + runIndex * ((216 - 21) / numRuns),
+          101 - runIndex * ((101 - 67) / numRuns),
+          192 - runIndex * ((192 - 21) / numRuns),
+        );
         p5.line(
           this.margin * 2 + this.fieldX[i - 1] * this.scale.x,
           p5.height - (this.margin * 2 + this.fieldY[i - 1] * this.scale.y),

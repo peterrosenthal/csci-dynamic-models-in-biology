@@ -152,7 +152,7 @@ export default class SpeedController {
   private draw(p5: P5) {
     p5.clear();
 
-    p5.fill(211, 47, 47);
+    p5.fill(65);
     p5.noStroke();
     p5.rect(
       this.margin,
@@ -174,7 +174,7 @@ export default class SpeedController {
       );
     });
 
-    p5.fill(229, 115, 115);
+    p5.fill(0, 150, 136);
     p5.noStroke();
     let radius: number = this.margin;
     let closestSnapPoint: SnapPoint = this.snapPoints[0];
@@ -189,13 +189,14 @@ export default class SpeedController {
         p5.mouseX >= 0 && p5.mouseX <= this.width &&
         p5.mouseY >= 0 && p5.mouseY <= this.height) {
       // uncomment for mouse debugging: console.log(`x:${p5.mouseX}, y:${p5.mouseY}`);
+      p5.fill(0, 105, 92);
       this.handlePosition = p5.constrain(p5.mouseX, this.margin, this.width - this.margin);
       radius *= 1.333;
     } else {
       this.handlePosition = closestSnapPoint.position;
     }
     p5.circle(this.handlePosition, this.height / 2, radius);
-    p5.fill(125);
+    p5.fill(55);
     p5.text(closestSnapPoint.label, this.width / 2, this.height / 2 + this.thickness * 3);
     this.speed = closestSnapPoint.value;
 

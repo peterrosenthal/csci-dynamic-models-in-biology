@@ -230,7 +230,7 @@ export default class Flocking {
    */
   private draw(p5: P5) {
     // drawing options
-    p5.background(15);
+    p5.background(236, 239, 241);
     p5.noStroke();
     p5.rectMode('center');
 
@@ -241,7 +241,7 @@ export default class Flocking {
     );
 
     // draw the background of the simulation domain
-    p5.fill(30);
+    p5.fill(207, 216, 220);
     p5.rect(
       0,
       0,
@@ -274,13 +274,13 @@ export default class Flocking {
     }
 
     // draw the repellants
-    p5.fill(150);
+    p5.fill(194, 24, 91);
     this.repellants.forEach((repellant: Repellant) => {
       p5.circle(repellant.position.x * this.scale, repellant.position.y * this.scale, 4);
     });
 
     // draw the boids
-    p5.fill(190);
+    p5.fill(69, 90, 100);
     this.boids.forEach((boid) => {
       const heading: THREE.Vector2 = new THREE.Vector2().addVectors(
         boid.position,

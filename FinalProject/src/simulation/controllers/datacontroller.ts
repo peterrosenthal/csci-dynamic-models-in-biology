@@ -197,7 +197,8 @@ export default class DataController {
       gridElement.className = 'graphDiv';
 
       closeButton.id = `closeGraph${id}`;
-      closeButton.innerHTML = 'X';
+      closeButton.innerHTML = '<img src="img/close.png" alt="Close Graph">';
+      closeButton.style.zIndex = '1';
       closeButton.addEventListener('click', () => {
         this.graphs.forEach((graph) => {
           if (graph.id == id) {

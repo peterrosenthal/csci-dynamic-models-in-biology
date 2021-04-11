@@ -100,15 +100,15 @@ export default class P5PlotFieldVsField extends P5Plot {
     }
 
     // draw graph
-    p5.background(255);
+    p5.background(236, 239, 241);
     if (Math.min(this.param.length, fieldAvg.length) < 2) {
       p5.noStroke();
-      p5.fill(0, 105, 92);
+      p5.fill(136, 14, 79);
       for (let i: number = 0; i < Math.min(this.param.length, fieldAvg.length); i++) {
         p5.circle(this.width / 2, p5.height - (this.margin * 2 + fieldAvg[i] * this.scale.y), 10);
       }
     } else {
-      p5.stroke(0, 105, 92);
+      p5.stroke(136, 14, 79);
       p5.strokeWeight(2.5);
       for (let i: number = 1; i < Math.min(this.param.length, fieldAvg.length); i++) {
         p5.line(
