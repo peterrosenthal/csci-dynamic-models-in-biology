@@ -5,6 +5,7 @@ import * as THREE from 'three';
  */
 export default class P5Plot {
   public id: number;
+  public remove: boolean;
 
   protected timesteps: number[];
   protected parent: HTMLElement;
@@ -47,5 +48,6 @@ export default class P5Plot {
     this.xlabel = xlabel;
     this.ylabel = ylabel;
     this.id = id;
+    this.remove = false;
   }
 }

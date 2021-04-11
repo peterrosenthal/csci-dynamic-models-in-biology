@@ -199,6 +199,11 @@ export default class DataController {
       closeButton.id = `closeGraph${id}`;
       closeButton.innerHTML = 'X';
       closeButton.addEventListener('click', () => {
+        this.graphs.forEach((graph) => {
+          if (graph.id == id) {
+            graph.remove = true;
+          }
+        });
         this.parent.removeChild(gridElement);
         this.graphs = this.graphs.filter((graph) => graph.id != id);
       });

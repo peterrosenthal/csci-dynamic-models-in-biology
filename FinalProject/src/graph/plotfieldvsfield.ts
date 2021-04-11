@@ -52,6 +52,9 @@ export default class P5PlotFieldVsField extends P5Plot {
    * @param {p5} p5 - the p5 instance.
    */
   private draw(p5: P5) {
+    if (this.remove) {
+      p5.remove();
+    }
     // set scale
     if (this.fieldX.length > 0) {
       for (let i:number = this.fieldX.length - 1;
@@ -124,7 +127,7 @@ export default class P5PlotFieldVsField extends P5Plot {
     p5.noStroke();
     p5.fill(0);
     p5.textSize(18);
-    p5.text(this.title, this.width / 2, 0);
+    p5.text(this.title, this.width / 2, 2);
 
     // draw axes labels
     p5.textAlign(p5.CENTER, p5.CENTER);

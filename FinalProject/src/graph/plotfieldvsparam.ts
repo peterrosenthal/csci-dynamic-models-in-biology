@@ -54,6 +54,9 @@ export default class P5PlotFieldVsField extends P5Plot {
    * @param {p5} p5 - the p5 instance.
    */
   private draw(p5: P5) {
+    if (this.remove) {
+      p5.remove();
+    }
     // set scale
     // TODO: fix this scaling sitch
     this.max.setX(this.param[this.param.length - 1]);
@@ -85,9 +88,15 @@ export default class P5PlotFieldVsField extends P5Plot {
         console.log(`something went wrong, runIndex:${runIndex}`);
       }*/
     }
+    let maxTimesteps: number = 0;
+    this.timesteps.forEach((timestep) => {
+      if (timestep > maxTimesteps) {
+        maxTimesteps = timestep;
+      }
+    });
     for (let i: number = 0; i < fieldAvg.length; i++) {
       // gives inaccurate results up untill the graph is fully filled, then it should be good
-      fieldAvg[i] /= this.field.length / (runIndex + 1);
+      fieldAvg[i] /= maxTimesteps; // this.field.length / (runIndex + 1);
     }
 
     // draw graph
@@ -132,7 +141,7 @@ export default class P5PlotFieldVsField extends P5Plot {
     p5.noStroke();
     p5.fill(0);
     p5.textSize(18);
-    p5.text(this.title, this.width / 2, 0);
+    p5.text(this.title, this.width / 2, 2);
 
     // draw axes labels
     p5.textAlign(p5.CENTER, p5.CENTER);
