@@ -24,12 +24,19 @@ export default class ChangeParameterElement extends ControllerElement {
     const amountLabel: HTMLLabelElement = document.createElement<'label'>('label');
     const amountInput: HTMLInputElement = document.createElement<'input'>('input');
 
+    const widthTmpSelect: HTMLSelectElement = document.getElementById('widthTmpSelect') as HTMLSelectElement;
+    const widthTmpOption: HTMLOptionElement = document.getElementById('widthTmpOption') as HTMLOptionElement;
+
     parameterLabel.htmlFor = `parameterSelect${this.id}`;
     parameterLabel.innerHTML = ': ';
 
     parameterSelect.id = parameterLabel.htmlFor;
     parameterSelect.name = parameterSelect.id;
     parameterSelect.addEventListener('change', () => {
+      widthTmpOption.innerHTML = parameterSelect.options[parameterSelect.selectedIndex].innerHTML;
+      widthTmpSelect.style.display = 'inline';
+      parameterSelect.style.width = `${widthTmpSelect.offsetWidth}px`;
+      widthTmpSelect.style.display = 'none';
       this.parameter = parameterSelect.value;
     });
 
@@ -47,6 +54,14 @@ export default class ChangeParameterElement extends ControllerElement {
       }
       parameterSelect.appendChild(parameterOption);
     });
+    this.parameter = 'N';
+    widthTmpOption.innerHTML = 'N';
+    widthTmpSelect.style.display = 'inline';
+    // for some reason the value is wrong the first time accessing widthTmpSelect.offsetWidth here
+    // console.log() will do the trick so that it's all fixed up by the time we need it one line later
+    console.log(`${widthTmpSelect.offsetWidth}px`);
+    parameterSelect.style.width = `${widthTmpSelect.offsetWidth}px`;
+    widthTmpSelect.style.display = 'none';
 
     amountLabel.htmlFor = `parameterAmount${this.id}`;
     amountLabel.innerHTML = ' by ';

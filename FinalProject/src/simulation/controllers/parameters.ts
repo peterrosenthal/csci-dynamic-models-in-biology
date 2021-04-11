@@ -140,16 +140,6 @@ export default class Parameters {
     this.vlimitElement = document.getElementById('inputVLimit') as HTMLInputElement;
     this.repellantStrengthElement = document.getElementById('inputRepellantStrength') as HTMLInputElement;
 
-    this.testInputNumber = new InputNumber(
-      document.getElementById('testInputNumber'),
-      this.simulation,
-      0,
-      100,
-      'int',
-      false,
-      10,
-    );
-
     this.N = parseInt(this.NElement.value);
     this.R = parseInt(this.RElement.value);
     this.width = parseInt(this.widthElement.value);

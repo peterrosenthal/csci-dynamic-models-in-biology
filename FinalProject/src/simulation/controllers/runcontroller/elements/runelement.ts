@@ -32,12 +32,19 @@ export default class RunElement extends ControllerElement {
     const runIndefiniteOption: HTMLOptionElement = document.createElement<'option'>('option');
     const runForOption: HTMLOptionElement = document.createElement<'option'>('option');
 
+    const widthTmpSelect: HTMLSelectElement = document.getElementById('widthTmpSelect') as HTMLSelectElement;
+    const widthTmpOption: HTMLOptionElement = document.getElementById('widthTmpOption') as HTMLOptionElement;
+
     const id: string = `runType${this.id}`;
 
     runTypeSelect.id = id;
     runTypeSelect.name = id;
 
     runTypeSelect.addEventListener('change', () => {
+      widthTmpOption.innerHTML = runTypeSelect.options[runTypeSelect.selectedIndex].innerHTML;
+      widthTmpSelect.style.display = 'inline';
+      runTypeSelect.style.width = `${widthTmpSelect.offsetWidth}px`;
+      widthTmpSelect.style.display = 'none';
       if (parseInt(runTypeSelect.value) > 0) {
         if (this.runDurationElement == null) {
           this.addRunDuration();
@@ -74,6 +81,10 @@ export default class RunElement extends ControllerElement {
 
     runTypeSelect.appendChild(runIndefiniteOption);
     runTypeSelect.appendChild(runForOption);
+    widthTmpOption.innerHTML = runTypeSelect.options[runTypeSelect.selectedIndex].innerHTML;
+    widthTmpSelect.style.display = 'inline';
+    runTypeSelect.style.width = `${widthTmpSelect.offsetWidth}px`;
+    widthTmpSelect.style.display = 'none';
     this.runTypeElement.appendChild(runTypeSelect);
     this.element.appendChild(this.runTypeElement);
     this.element.appendChild(this.punctuation);

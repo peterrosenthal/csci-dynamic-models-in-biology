@@ -169,6 +169,7 @@ export default class DataController {
 
     newGraphDiv.style.display = 'none';
 
+    // BUG: graphs sometimes don't fill up after being reset
     resetButton.addEventListener('click', () => {
       this.simulation.speedController.pause();
       this.allData.forEach((data) => {
@@ -220,40 +221,37 @@ export default class DataController {
           yAxisData = data;
         }
       });
-
       if (xAxisData == undefined || yAxisData == undefined) {
         console.log(xAxisSelect.value);
         console.log(yAxisSelect.value);
+      } else if (xAxisSelect.value == 'timesteps' ||
+          xAxisSelect.value == 'radiusOfGyration' ||
+          xAxisSelect.value == 'alignment') {
+        this.graphs.push(
+          new P5PlotFieldVsField(
+            xAxisData.values,
+            yAxisData.values,
+            this.timesteps.values,
+            graphParent,
+            `${xAxisData.title} vs ${yAxisData.title}`,
+            xAxisData.title,
+            yAxisData.title,
+            id,
+          ),
+        );
       } else {
-        if (xAxisSelect.value == 'timesteps' ||
-            xAxisSelect.value == 'radiusOfGyration' ||
-            xAxisSelect.value == 'alignment') {
-          this.graphs.push(
-            new P5PlotFieldVsField(
-              xAxisData.values,
-              yAxisData.values,
-              this.timesteps.values,
-              graphParent,
-              `${xAxisData.title} vs ${yAxisData.title}`,
-              xAxisData.title,
-              yAxisData.title,
-              id,
-            ),
-          );
-        } else {
-          this.graphs.push(
-            new P5PlotFieldVsParam(
-              xAxisData.values,
-              yAxisData.values,
-              this.timesteps.values,
-              graphParent,
-              `${xAxisData.title} vs\nTime Averaged ${yAxisData.title}`,
-              xAxisData.title,
-              yAxisData.title,
-              id,
-            ),
-          );
-        }
+        this.graphs.push(
+          new P5PlotFieldVsParam(
+            xAxisData.values,
+            yAxisData.values,
+            this.timesteps.values,
+            graphParent,
+            `${xAxisData.title} vs\nTime Averaged ${yAxisData.title}`,
+            xAxisData.title,
+            yAxisData.title,
+            id,
+          ),
+        );
       }
 
       newGraphDiv.style.display = 'none';

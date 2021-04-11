@@ -21,8 +21,15 @@ export default class RepeatElement extends ControllerElement {
     const timesOption: HTMLOptionElement = document.createElement<'option'>('option');
     const indefiniteOption: HTMLOptionElement = document.createElement<'option'>('option');
 
+    const widthTmpSelect: HTMLSelectElement = document.getElementById('widthTmpSelect') as HTMLSelectElement;
+    const widthTmpOption: HTMLOptionElement = document.getElementById('widthTmpOption') as HTMLOptionElement;
+
     typeSelect.id = `repeatType${this.id}`;
     typeSelect.addEventListener('change', () => {
+      widthTmpOption.innerHTML = typeSelect.options[typeSelect.selectedIndex].innerHTML;
+      widthTmpSelect.style.display = 'inline';
+      typeSelect.style.width = `${widthTmpSelect.offsetWidth}px`;
+      widthTmpSelect.style.display = 'none';
       if (typeSelect.value == 'times' && amountInput == null) {
         this.element.removeChild(this.punctuation);
         this.element.removeChild(typeSelect);
@@ -58,6 +65,13 @@ export default class RepeatElement extends ControllerElement {
 
     typeSelect.appendChild(indefiniteOption);
     typeSelect.appendChild(timesOption);
+    widthTmpOption.innerHTML = typeSelect.options[typeSelect.selectedIndex].innerHTML;
+    widthTmpSelect.style.display = 'inline';
+    // for some reason the value is wrong the first time accessing widthTmpSelect.offsetWidth here
+    // console.log() will do the trick so that it's all fixed up by the time we need it one line later
+    console.log(`${widthTmpSelect.offsetWidth}px`);
+    typeSelect.style.width = `${widthTmpSelect.offsetWidth}px`;
+    widthTmpSelect.style.display = 'none';
     if (amountInput != null) {
       this.element.appendChild(amountInput);
     }

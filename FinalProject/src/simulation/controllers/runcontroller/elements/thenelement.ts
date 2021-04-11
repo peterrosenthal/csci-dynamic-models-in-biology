@@ -25,27 +25,25 @@ export default class ThenElement extends ControllerElement {
     const thenRepeatOption: HTMLOptionElement = document.createElement<'option'>('option');
     const thenResetOption: HTMLOptionElement = document.createElement<'option'>('option');
 
+    const widthTmpSelect: HTMLSelectElement = document.getElementById('widthTmpSelect') as HTMLSelectElement;
+    const widthTmpOption: HTMLOptionElement = document.getElementById('widthTmpOption') as HTMLOptionElement;
+
     thenLabel.htmlFor = `thenSelect${this.id}`;
     thenLabel.innerHTML = 'then ';
 
     thenSelect.id = thenLabel.htmlFor;
     thenSelect.name = thenSelect.id;
-
     thenSelect.addEventListener('change', () => {
-      switch (thenSelect.value) {
-      default:
+      widthTmpOption.innerHTML = thenSelect.options[thenSelect.selectedIndex].innerHTML;
+      widthTmpSelect.style.display = 'inline';
+      thenSelect.style.width = `${widthTmpSelect.offsetWidth}px`;
+      widthTmpSelect.style.display = 'none';
+      if (thenSelect.value == '') {
         this.runController.removeElementsAfter(this.id);
         this.element.removeChild(this.punctuation);
         this.punctuation.innerHTML = '.';
         this.element.appendChild(this.punctuation);
-        break;
-      case 'run':
-      case 'add':
-      case 'sub':
-      case 'mult':
-      case 'div':
-      case 'repeat':
-      case 'reset':
+      } else {
         this.runController.removeElementsAfter(this.id);
         this.element.removeChild(this.punctuation);
         this.punctuation.innerHTML = '';
@@ -97,6 +95,10 @@ export default class ThenElement extends ControllerElement {
     if (addResetOption) {
       thenSelect.appendChild(thenResetOption);
     }
+    widthTmpOption.innerHTML = thenSelect.options[thenSelect.selectedIndex].innerHTML;
+    widthTmpSelect.style.display = 'inline';
+    thenSelect.style.width = `${widthTmpSelect.offsetWidth}px`;
+    widthTmpSelect.style.display = 'none';
     this.element.appendChild(thenLabel);
     this.element.appendChild(thenSelect);
     this.element.appendChild(this.punctuation);

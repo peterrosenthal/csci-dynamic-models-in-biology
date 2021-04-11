@@ -5,7 +5,7 @@ body {
 
 #controlls {
   display: grid;
-  grid-template-columns: minmax(150px, 25%) 1fr;
+  grid-template-columns: minmax(300px, 30%) 1fr;
   width: 100%;
 }
 
@@ -44,6 +44,15 @@ body {
 #runControllerDiv {
   background: #fff;
   float: right;
+}
+
+#widthTmpSelect {
+  display: none;
+  visibility: hidden;
+}
+
+input[type=number] {
+  width: 5em;
 }
 
 #sketches {
