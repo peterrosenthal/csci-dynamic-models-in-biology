@@ -71,7 +71,7 @@ button:active {
 
 #settingsButtonsWrapper {
   display: grid;
-  grid-template-columns: 1fr repeat(2, minmax(4em, max-content));
+  grid-template-columns: 1fr repeat(2, minmax(2em, max-content));
 }
 
 #parametersButton {

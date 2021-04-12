@@ -112,7 +112,8 @@ export default class RunController {
     // console.log(`running step ${this.run}`);
     if (this.run >= this.elements.length) {
       this.simulation.speedController.pause();
-      this.simulation.flocking.restart();
+      this.run = 0;
+      this.nextRunStep();
       return;
     }
     const element: ControllerElement = this.elements[this.run];
@@ -364,8 +365,8 @@ export default class RunController {
       this.simulation.parameters.reset();
       this.realizations++;
       this.runNum = 0;
-      this.elements.forEach((e) => {
-        if (e.type == 'repeat') {
+      this.elements.forEach((e, index) => {
+        if (e.type == 'repeat' && index <= this.run) {
           const repeatElement: RepeatElement = e as RepeatElement;
           repeatElement.timesLeft = repeatElement.times;
         }

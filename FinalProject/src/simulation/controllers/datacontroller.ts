@@ -2,6 +2,7 @@ import Simulation from '../simulation';
 import P5PlotFieldVsField from '../../graph/plotfieldvsfield';
 import P5PlotFieldVsParam from '../../graph/plotfieldvsparam';
 import P5Plot from '../../graph/p5plot';
+import RepeatElement from './runcontroller/elements/repeatelement';
 
 interface Data {
   name: string,
@@ -169,14 +170,22 @@ export default class DataController {
 
     newGraphDiv.style.display = 'none';
 
-    // BUG: graphs sometimes don't fill up after being reset
     resetButton.addEventListener('click', () => {
       this.simulation.speedController.pause();
+      this.simulation.parameters.reset();
       this.allData.forEach((data) => {
         while (data.values.length > 0) {
           data.values.pop();
         }
       });
+      this.simulation.runController.elements.forEach((element) => {
+        if (element.type == 'repeat') {
+          const repeatElement: RepeatElement = element as RepeatElement;
+          repeatElement.timesLeft = repeatElement.times;
+        }
+      });
+      this.simulation.runController.realizations = 1;
+      this.simulation.runController.runNum = 0;
       this.simulation.runController.run = 0;
       this.simulation.runController.nextRunStep();
     });

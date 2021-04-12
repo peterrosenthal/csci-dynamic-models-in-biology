@@ -13,10 +13,8 @@ export default class Repellant {
    */
   constructor(simulation: Simulation) {
     this.position = new THREE.Vector2(
-      Math.random() * simulation.parameters.width +
-        simulation.parameters.center.x - simulation.parameters.width / 2,
-      Math.random() * simulation.parameters.height +
-        simulation.parameters.center.y - simulation.parameters.height / 2,
+      Math.random() * simulation.parameters.width - simulation.parameters.width / 2,
+      Math.random() * simulation.parameters.height - simulation.parameters.height / 2,
     );
   }
 }

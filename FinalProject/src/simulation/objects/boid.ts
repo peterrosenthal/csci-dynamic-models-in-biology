@@ -20,8 +20,11 @@ export default class Boid {
    */
   constructor(simulation: Simulation) {
     this.simulation = simulation;
-    this.position = new THREE.Vector2(randn(), randn()).multiplyScalar(this.simulation.parameters.P);
-    this.velocity = new THREE.Vector2(randn(), randn()).multiplyScalar(this.simulation.parameters.V);
+    this.position = new THREE.Vector2(randn(), randn());
+    this.position.multiplyScalar(this.simulation.parameters.P);
+    this.position.add(this.simulation.parameters.start);
+    this.velocity = new THREE.Vector2(randn(), randn());
+    this.velocity.multiplyScalar(this.simulation.parameters.V);
     this.updated = false;
   }
 

@@ -229,6 +229,9 @@ export default class Flocking {
    * @param {p5} p5 - the p5 instance.
    */
   private draw(p5: P5) {
+    // update drawing scale
+    this.updateScale();
+
     // drawing options
     p5.background(236, 239, 241);
     p5.noStroke();
@@ -236,8 +239,8 @@ export default class Flocking {
 
     // move drawing domain
     p5.translate(
-      this.simulation.parameters.center.x + this.width / 2,
-      this.simulation.parameters.center.y + this.height / 2,
+      this.width / 2,
+      this.height / 2,
     );
 
     // draw the background of the simulation domain
@@ -287,12 +290,12 @@ export default class Flocking {
         boid.velocity.clone().normalize(),
       );
       p5.triangle(
-        heading.x * this.scale,
-        heading.y * this.scale,
-        heading.clone().rotateAround(boid.position, 4 * Math.PI / 5).x * this.scale,
-        heading.clone().rotateAround(boid.position, 4 * Math.PI / 5).y * this.scale,
-        heading.clone().rotateAround(boid.position, 6 * Math.PI / 5).x * this.scale,
-        heading.clone().rotateAround(boid.position, 6 * Math.PI / 5).y * this.scale,
+        (heading.x - this.simulation.parameters.center.x) * this.scale,
+        (heading.y - this.simulation.parameters.center.y) * this.scale,
+        (heading.clone().rotateAround(boid.position, 4 * Math.PI / 5).x - this.simulation.parameters.center.x) * this.scale,
+        (heading.clone().rotateAround(boid.position, 4 * Math.PI / 5).y - this.simulation.parameters.center.y) * this.scale,
+        (heading.clone().rotateAround(boid.position, 6 * Math.PI / 5).x - this.simulation.parameters.center.x) * this.scale,
+        (heading.clone().rotateAround(boid.position, 6 * Math.PI / 5).y - this.simulation.parameters.center.y) * this.scale,
       );
     });
   }
