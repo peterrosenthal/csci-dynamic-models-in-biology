@@ -292,10 +292,14 @@ export default class Flocking {
       p5.triangle(
         (heading.x - this.simulation.parameters.center.x) * this.scale,
         (heading.y - this.simulation.parameters.center.y) * this.scale,
-        (heading.clone().rotateAround(boid.position, 4 * Math.PI / 5).x - this.simulation.parameters.center.x) * this.scale,
-        (heading.clone().rotateAround(boid.position, 4 * Math.PI / 5).y - this.simulation.parameters.center.y) * this.scale,
-        (heading.clone().rotateAround(boid.position, 6 * Math.PI / 5).x - this.simulation.parameters.center.x) * this.scale,
-        (heading.clone().rotateAround(boid.position, 6 * Math.PI / 5).y - this.simulation.parameters.center.y) * this.scale,
+        (heading.clone().rotateAround(boid.position, 4 * Math.PI / 5).x -
+          this.simulation.parameters.center.x) *this.scale,
+        (heading.clone().rotateAround(boid.position, 4 * Math.PI / 5).y -
+          this.simulation.parameters.center.y) * this.scale,
+        (heading.clone().rotateAround(boid.position, 6 * Math.PI / 5).x -
+          this.simulation.parameters.center.x) * this.scale,
+        (heading.clone().rotateAround(boid.position, 6 * Math.PI / 5).y -
+          this.simulation.parameters.center.y) * this.scale,
       );
     });
   }

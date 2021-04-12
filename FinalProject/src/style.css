@@ -89,24 +89,14 @@ button:active {
   width: 100%;
 }
 
-.inputNumber {
-  position: relative;
-  text-align: center;
-  margin: 0.2em;
-  width: 8em;
-  height: 4em;
-}
-
-.inputNumber input {
-  width: 80%;
-  text-align: center;
-  margin: auto;
-}
-
-.inputNumber canvas {
-  position: absolute;
-  bottom: 0;
-  left: 0;
+#helpDiv {
+  background: #ECEFF1;
+  margin: 1em;
+  padding: 0.5em;
+  border-width: 0;
+  border-radius: 4px;
+  box-shadow: 0 3px 4px 3px rgba(38, 50, 56, 0.3);
+  grid-column: 2;
 }
 
 #parametersDiv {

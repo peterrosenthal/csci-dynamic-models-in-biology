@@ -11,20 +11,34 @@
                 <nav>
                     <div id="navButtonsWrapper">
                         <div id="helpButtonWrapper">
-                            <button id="helpButton"><img src="./img/help.png" alt="Help"></button>
+                            <button id="helpButton"><img src="./img/help.png" alt="Help" title="Help"></button>
                         </div>
                         <div id="speedButtonsWrapper">
-                            <button id="playButton"><img src="./img/play.png" alt="Play"></button>
-                            <button id="pauseButton"><img src="./img/pause.png" alt="Pause"></button>
-                            <button id="resetButton"><img src="./img/reset.png" alt="Reset"></button>
+                            <button id="playButton"><img src="./img/play.png" alt="Play" title="Play"></button>
+                            <button id="pauseButton"><img src="./img/pause.png" alt="Pause" title="Pause"></button>
+                            <button id="resetButton"><img src="./img/reset.png" alt="Reset" title="Reset"></button>
                         </div>
                         <div id="settingsButtonsWrapper">
-                            <button id="parametersButton"><img src="img/parameters.png" alt="Parameters"></button>
-                            <button id="runControllerButton"><img src="img/runsettings.png" alt="Run Settings"></button>
+                            <button id="parametersButton"><img src="img/parameters.png" alt="Parameters" title="Parameters"></button>
+                            <button id="runControllerButton"><img src="img/runsettings.png" alt="Run Settings" title="Run Settings"></button>
                         </div>
                     </div>
                     <div id="speedController" class="speedController"></div>
                 </nav>
+                <div id="helpDiv">
+                    <p>
+                        Welcome to Peter Rosenthal's boids simulator! This application simulates flocking behavior based on the classic boids algorithm, and provides an interface to create graphs that are updated live as the simulation runs.
+                    </p>
+                    <p>
+                        Graphs can be added with the '+' button. The graph adding dialog has selectors to choose which variables are plotted on the x and y axes of the graph.
+                    </p>
+                    <p>
+                        The 'Parameters' dialog controls all of the initial conditions of the simulation. The visibility of the dialog can be toggled on and off with the button that resembles three stacked sliders.
+                    </p>
+                    <p>
+                        The 'Run Settings' dialog gives an expressive pseudo programming language that can be used to control the simulation's runs. It can run the simulation multiple times at different parameters, and/or for multiple realizations of the same parameter to reduce noisy data, and do so much more too! The visibility of the 'Run Settings' dialog can be toggled on and off with the button that resembles a cog wheel with a play triangle embedded in it.
+                    </p>
+                </div>
                 <div id="parametersDiv">
                     <label for="inputN">Number of boids</label>
                     <input type="number" id="inputN" name="inputN" step="1" min="0" value="100">
@@ -81,7 +95,7 @@
             <div id="sketches">
                 <div id="flockSketch"></div>
                 <div id="addGraphDiv">
-                    <button id="addGraphButton"><img src="img/add.png" alt="New Graph"></button>
+                    <button id="addGraphButton"><img src="img/add.png" alt="New Graph" title="New Graph"></button>
                     <div id="newGraphDiv">
                         <label for="xAxis">X-Axis: </label>
                         <select id="xAxis" name="xAxis">
@@ -113,7 +127,7 @@
                             <option value="alignment">Alignment</option>
                         </select>
                         <br>
-                        <button id="newGraphButton"><img src="img/create.png" alt="Create Graph"></button>
+                        <button id="newGraphButton"><img src="img/create.png" alt="Create Graph" title="Create Graph"></button>
                     </div>
                 </div>
             </div>
